@@ -55,7 +55,8 @@ class _ContentListViewState<T extends Model> extends State<ContentListView<T>> {
           physics: const NeverScrollableScrollPhysics(),
           items: items,
           keyingFunction: (item) => Key(item.id),
-          itemBuilder: (BuildContext context, T item, Animation<double> animation) {
+          itemBuilder:
+              (BuildContext context, T item, Animation<double> animation) {
             return FadeTransition(
               key: Key(item.id),
               opacity: animation,
@@ -89,7 +90,9 @@ class _ContentListViewState<T extends Model> extends State<ContentListView<T>> {
                 title: widget.title,
               ),
               SliverToBoxAdapter(
-                child: widget.builder != null ? widget.builder!(itemBuilder) : itemBuilder(context, null, null),
+                child: widget.builder != null
+                    ? widget.builder!(itemBuilder)
+                    : itemBuilder(context, null, null),
               ),
               const SliverToBoxAdapter(
                 child: SafeArea(

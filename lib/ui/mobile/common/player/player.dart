@@ -151,7 +151,9 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
         .then((_) {
       bounceUp = false;
     });
-    if (haptic && (prevOffset - offset).abs() > actuationOffset) HapticFeedback.lightImpact();
+    if (haptic && (prevOffset - offset).abs() > actuationOffset) {
+      HapticFeedback.lightImpact();
+    }
   }
 
   void snapToPrev() {
@@ -167,7 +169,9 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
       sAnim.animateTo(0.0, duration: Duration.zero);
       // tracks.insert(0, tracks.removeLast());
     });
-    if ((sPrevOffset - sOffset).abs() > actuationOffset) HapticFeedback.lightImpact();
+    if ((sPrevOffset - sOffset).abs() > actuationOffset) {
+      HapticFeedback.lightImpact();
+    }
   }
 
   void snapToCurrent() {
@@ -177,7 +181,9 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
       curve: bouncingCurve,
       duration: const Duration(milliseconds: 300),
     );
-    if ((sPrevOffset - sOffset).abs() > actuationOffset) HapticFeedback.lightImpact();
+    if ((sPrevOffset - sOffset).abs() > actuationOffset) {
+      HapticFeedback.lightImpact();
+    }
   }
 
   void snapToNext() {
@@ -193,7 +199,9 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
       sAnim.animateTo(0.0, duration: Duration.zero);
       // tracks.add(tracks.removeAt(0));
     });
-    if ((sPrevOffset - sOffset).abs() > actuationOffset) HapticFeedback.lightImpact();
+    if ((sPrevOffset - sOffset).abs() > actuationOffset) {
+      HapticFeedback.lightImpact();
+    }
   }
 
   @override
@@ -239,18 +247,27 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
           velocity.addPosition(event.timeStamp, event.position);
 
           if (offset <= maxOffset) return;
-          if (scrollController.positions.isNotEmpty && scrollController.positions.first.pixels > 0.0 && offset >= maxOffset * 2) return;
+          if (scrollController.positions.isNotEmpty &&
+              scrollController.positions.first.pixels > 0.0 &&
+              offset >= maxOffset * 2) {
+            return;
+          }
 
           offset -= event.delta.dy;
           offset = offset.clamp(-headRoom, maxOffset * 2);
 
-          widget.animation.animateTo(offset / maxOffset, duration: Duration.zero);
+          widget.animation
+              .animateTo(offset / maxOffset, duration: Duration.zero);
 
           setState(() => queueScrollable = offset >= maxOffset * 2);
         },
         onPointerUp: (event) {
           if (offset <= maxOffset) return;
-          if (scrollController.positions.isNotEmpty && scrollController.positions.first.pixels > 0.0 && offset >= maxOffset * 2) return;
+          if (scrollController.positions.isNotEmpty &&
+              scrollController.positions.first.pixels > 0.0 &&
+              offset >= maxOffset * 2) {
+            return;
+          }
 
           setState(() => queueScrollable = true);
           verticalSnapping();
@@ -265,13 +282,16 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
 
           /// Vertical
           onVerticalDragUpdate: (details) {
-            if (details.globalPosition.dy > screenSize.height - deadSpace) return;
+            if (details.globalPosition.dy > screenSize.height - deadSpace) {
+              return;
+            }
             if (offset > maxOffset) return;
 
             offset -= details.primaryDelta ?? 0;
             offset = offset.clamp(-headRoom, maxOffset * 2 + headRoom / 2);
 
-            widget.animation.animateTo(offset / maxOffset, duration: Duration.zero);
+            widget.animation
+                .animateTo(offset / maxOffset, duration: Duration.zero);
           },
           onVerticalDragEnd: (_) => verticalSnapping(),
 
@@ -285,7 +305,9 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
           onHorizontalDragUpdate: (details) {
             return;
             if (offset > maxOffset) return;
-            if (details.globalPosition.dy > screenSize.height - deadSpace) return;
+            if (details.globalPosition.dy > screenSize.height - deadSpace) {
+              return;
+            }
 
             sOffset -= details.primaryDelta ?? 0.0;
             sOffset = sOffset.clamp(-sMaxOffset, sMaxOffset);
@@ -303,9 +325,11 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
             // speed threshold is an eyeballed value
             // used to actuate on fast flicks too
 
-            if (speed > threshold || distance > actuationOffset * sActuationMulti) {
+            if (speed > threshold ||
+                distance > actuationOffset * sActuationMulti) {
               snapToPrev();
-            } else if (-speed > threshold || -distance > actuationOffset * sActuationMulti) {
+            } else if (-speed > threshold ||
+                -distance > actuationOffset * sActuationMulti) {
               snapToNext();
             } else {
               snapToCurrent();
@@ -316,20 +340,26 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
           child: AnimatedBuilder(
             animation: widget.animation,
             builder: (context, child) {
-              final Color onSecondary = Theme.of(context).colorScheme.onSecondaryContainer;
+              final Color onSecondary =
+                  Theme.of(context).colorScheme.onSecondaryContainer;
 
               final double progressValue = widget.animation.value;
               final double clampedProgressValue = progressValue.clamp(0, 1);
               final double inverseProgressValue = 1 - progressValue;
-              final double inverseClampedProgressValue = 1 - clampedProgressValue;
+              final double inverseClampedProgressValue =
+                  1 - clampedProgressValue;
 
-              final double reverseProgressValue = inverseAboveOne(progressValue);
-              final double reverseClampedProgressValue = reverseProgressValue.clamp(0, 1);
+              final double reverseProgressValue =
+                  inverseAboveOne(progressValue);
+              final double reverseClampedProgressValue =
+                  reverseProgressValue.clamp(0, 1);
               // final double rip = 1 - rp;
               // final double ricp = 1 - rcp;
 
-              final double queueProgressValue = progressValue.clamp(1.0, 3.0) - 1.0;
-              final double queueClampedProgressValue = queueProgressValue.clamp(0.0, 1.0);
+              final double queueProgressValue =
+                  progressValue.clamp(1.0, 3.0) - 1.0;
+              final double queueClampedProgressValue =
+                  queueProgressValue.clamp(0.0, 1.0);
 
               // print(1.0 - (p.clamp(1, 3) - 1));
 
@@ -338,21 +368,30 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                       ? reverseProgressValue
                       : 1 - (progressValue - 1)
                   : progressValue;
-              final double bounceClampedProgressValue = bounceProgressValue.clamp(0.0, 1.0);
+              final double bounceClampedProgressValue =
+                  bounceProgressValue.clamp(0.0, 1.0);
 
               final BorderRadius borderRadius = BorderRadius.only(
                 topLeft: Radius.circular(24.0 + 6.0 * progressValue),
                 topRight: Radius.circular(24.0 + 6.0 * progressValue),
-                bottomLeft: Radius.circular(24.0 * (1 - progressValue * 10 + 9).clamp(0, 1)),
-                bottomRight: Radius.circular(24.0 * (1 - progressValue * 10 + 9).clamp(0, 1)),
+                bottomLeft: Radius.circular(
+                    24.0 * (1 - progressValue * 10 + 9).clamp(0, 1)),
+                bottomRight: Radius.circular(
+                    24.0 * (1 - progressValue * 10 + 9).clamp(0, 1)),
               );
-              final double bottomOffset =
-                  (-80 * inverseClampedProgressValue + progressValue.clamp(-1, 0) * -200) - (bottomInset * inverseClampedProgressValue);
-              final double opacity = (bounceClampedProgressValue * 5 - 4).clamp(0, 1);
-              final double fastOpacity = (bounceClampedProgressValue * 10 - 9).clamp(0, 1);
+              final double bottomOffset = (-80 * inverseClampedProgressValue +
+                      progressValue.clamp(-1, 0) * -200) -
+                  (bottomInset * inverseClampedProgressValue);
+              final double opacity =
+                  (bounceClampedProgressValue * 5 - 4).clamp(0, 1);
+              final double fastOpacity =
+                  (bounceClampedProgressValue * 10 - 9).clamp(0, 1);
               double panelHeight = maxOffset / 1.6;
               if (progressValue > 1.0) {
-                panelHeight = vp(a: panelHeight, b: maxOffset / 1.6 - 100.0 - topInset, c: queueClampedProgressValue);
+                panelHeight = vp(
+                    a: panelHeight,
+                    b: maxOffset / 1.6 - 100.0 - topInset,
+                    c: queueClampedProgressValue);
               }
 
               // final double queueOpacity = ((p.clamp(1.0, 3.0) - 1).clamp(0.0, 1.0) * 4 - 3).clamp(0, 1);
@@ -362,7 +401,9 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                 children: [
                   /// Player Body
                   Container(
-                    color: progressValue > 0 ? Colors.transparent : null, // hit test only when expanded
+                    color: progressValue > 0
+                        ? Colors.transparent
+                        : null, // hit test only when expanded
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Transform.translate(
@@ -371,16 +412,23 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                           color: Colors.transparent, // prevents scrolling gap
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 12 * (1 - clampedProgressValue * 10 + 9).clamp(0, 1), vertical: 12 * inverseClampedProgressValue),
+                                horizontal: 12 *
+                                    (1 - clampedProgressValue * 10 + 9)
+                                        .clamp(0, 1),
+                                vertical: 12 * inverseClampedProgressValue),
                             child: Container(
-                              height: vp(a: 82.0, b: panelHeight, c: progressValue.clamp(0, 3)),
+                              height: vp(
+                                  a: 82.0,
+                                  b: panelHeight,
+                                  c: progressValue.clamp(0, 3)),
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: borderRadius,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(.15 * clampedProgressValue),
+                                    color: Colors.black.withValues(
+                                        alpha: .15 * clampedProgressValue),
                                     blurRadius: 32.0,
                                   )
                                 ],
@@ -393,8 +441,22 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                     colors: [
-                                      Theme.of(context).colorScheme.onSecondary.withOpacity(vp(a: .77, b: .9, c: inverseClampedProgressValue)),
-                                      Theme.of(context).colorScheme.onSecondary.withOpacity(vp(a: .5, b: .9, c: inverseClampedProgressValue)),
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary
+                                          .withValues(
+                                              alpha: vp(
+                                                  a: .77,
+                                                  b: .9,
+                                                  c: inverseClampedProgressValue)),
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary
+                                          .withValues(
+                                              alpha: vp(
+                                                  a: .5,
+                                                  b: .9,
+                                                  c: inverseClampedProgressValue)),
                                     ],
                                   ),
                                 ),
@@ -418,23 +480,31 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     onPressed: () {
                                       snapToMini();
                                     },
-                                    icon: Icon(CupertinoIcons.chevron_down, color: onSecondary),
+                                    icon: Icon(CupertinoIcons.chevron_down,
+                                        color: onSecondary),
                                     iconSize: 26.0,
                                   ),
                                   Expanded(
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(45.0),
                                       onTap: () {
-                                        if (currentMusic.playing != null && currentMusic.playing!.album != null) {
+                                        if (currentMusic.playing != null &&
+                                            currentMusic.playing!.album !=
+                                                null) {
                                           snapToMini();
-                                          AlbumView.view(currentMusic.playing!.album!, context: context)
-                                              .then((_) => context.read<ThemeProvider>().resetTheme());
+                                          AlbumView.view(
+                                                  currentMusic.playing!.album!,
+                                                  context: context)
+                                              .then((_) => context
+                                                  .read<ThemeProvider>()
+                                                  .resetTheme());
                                         }
                                       },
                                       child: Column(
@@ -443,18 +513,24 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                           Text(
                                             "Playing from",
                                             style: TextStyle(
-                                              color: onSecondary.withOpacity(.8),
+                                              color: onSecondary.withValues(
+                                                  alpha: .8),
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                           Text(
-                                            currentMusic.playing?.album?.name ?? "?",
+                                            currentMusic.playing?.album?.name ??
+                                                "?",
                                             textAlign: TextAlign.center,
                                             maxLines: 1,
                                             softWrap: false,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: onSecondary.withOpacity(.9)),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20.0,
+                                                color: onSecondary.withValues(
+                                                    alpha: .9)),
                                           ),
                                         ],
                                       ),
@@ -465,16 +541,21 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                       showMaterialModalBottomSheet(
                                         context: context,
                                         useRootNavigator: true,
-                                        builder: (context) => Container(height: 300),
+                                        builder: (context) =>
+                                            Container(height: 300),
                                       );
                                     },
                                     icon: Container(
                                       padding: const EdgeInsets.all(4.0),
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.secondary.withOpacity(.2),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                            .withValues(alpha: .2),
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Icon(CupertinoIcons.ellipsis, color: onSecondary),
+                                      child: Icon(CupertinoIcons.ellipsis,
+                                          color: onSecondary),
                                     ),
                                     iconSize: 26.0,
                                   ),
@@ -512,7 +593,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                           : (1 - bounceProgressValue)
                                       : 0.0))),
                       child: Padding(
-                        padding: EdgeInsets.all(12.0 * inverseClampedProgressValue),
+                        padding:
+                            EdgeInsets.all(12.0 * inverseClampedProgressValue),
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: Stack(
@@ -522,18 +604,27 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                 Opacity(
                                   opacity: fastOpacity,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 24.0 * (16 * (!bounceDown ? inverseClampedProgressValue : 0.0) + 1)),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 24.0 *
+                                            (16 *
+                                                    (!bounceDown
+                                                        ? inverseClampedProgressValue
+                                                        : 0.0) +
+                                                1)),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         IconButton(
                                           iconSize: 28.0,
-                                          icon: Icon(CupertinoIcons.shuffle, color: onSecondary),
+                                          icon: Icon(CupertinoIcons.shuffle,
+                                              color: onSecondary),
                                           onPressed: () {},
                                         ),
                                         IconButton(
                                           iconSize: 28.0,
-                                          icon: Icon(CupertinoIcons.repeat, color: onSecondary),
+                                          icon: Icon(CupertinoIcons.repeat,
+                                              color: onSecondary),
                                           onPressed: () {},
                                         ),
                                       ],
@@ -544,18 +635,28 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                 Opacity(
                                   opacity: fastOpacity,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 84.0 * (2 * (!bounceDown ? inverseClampedProgressValue : 0.0) + 1)),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 84.0 *
+                                            (2 *
+                                                    (!bounceDown
+                                                        ? inverseClampedProgressValue
+                                                        : 0.0) +
+                                                1)),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         IconButton(
                                           iconSize: 40.0,
-                                          icon: Icon(Icons.skip_previous_rounded, color: onSecondary),
+                                          icon: Icon(
+                                              Icons.skip_previous_rounded,
+                                              color: onSecondary),
                                           onPressed: snapToPrev,
                                         ),
                                         IconButton(
                                           iconSize: 40.0,
-                                          icon: Icon(Icons.skip_next_rounded, color: onSecondary),
+                                          icon: Icon(Icons.skip_next_rounded,
+                                              color: onSecondary),
                                           onPressed: snapToNext,
                                         ),
                                       ],
@@ -563,49 +664,94 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                   ),
                                 ),
                               Padding(
-                                padding: EdgeInsets.all(12.0 * inverseClampedProgressValue).add(EdgeInsets.only(
-                                    right: !bounceDown
-                                        ? !bounceUp
-                                            ? screenSize.width * reverseClampedProgressValue / 2 -
-                                                80 * reverseClampedProgressValue / 2 +
-                                                (queueProgressValue * 24.0)
-                                            : screenSize.width * clampedProgressValue / 2 - 80 * clampedProgressValue / 2
-                                        : screenSize.width * bounceClampedProgressValue / 2 -
-                                            80 * bounceClampedProgressValue / 2 +
-                                            (queueProgressValue * 24.0))),
+                                padding: EdgeInsets.all(
+                                        12.0 * inverseClampedProgressValue)
+                                    .add(EdgeInsets.only(
+                                        right: !bounceDown
+                                            ? !bounceUp
+                                                ? screenSize.width *
+                                                        reverseClampedProgressValue /
+                                                        2 -
+                                                    80 *
+                                                        reverseClampedProgressValue /
+                                                        2 +
+                                                    (queueProgressValue * 24.0)
+                                                : screenSize.width *
+                                                        clampedProgressValue /
+                                                        2 -
+                                                    80 *
+                                                        clampedProgressValue /
+                                                        2
+                                            : screenSize.width *
+                                                    bounceClampedProgressValue /
+                                                    2 -
+                                                80 *
+                                                    bounceClampedProgressValue /
+                                                    2 +
+                                                (queueProgressValue * 24.0))),
                                 child: Theme(
                                   data: Theme.of(context).copyWith(
-                                    floatingActionButtonTheme: FloatingActionButtonThemeData(
-                                      sizeConstraints: BoxConstraints.tight(Size.square(vp(a: 60.0, b: 80.0, c: reverseProgressValue))),
-                                      iconSize: vp(a: 32.0, b: 46.0, c: reverseProgressValue),
+                                    floatingActionButtonTheme:
+                                        FloatingActionButtonThemeData(
+                                      sizeConstraints: BoxConstraints.tight(
+                                          Size.square(vp(
+                                              a: 60.0,
+                                              b: 80.0,
+                                              c: reverseProgressValue))),
+                                      iconSize: vp(
+                                          a: 32.0,
+                                          b: 46.0,
+                                          c: reverseProgressValue),
                                     ),
                                   ),
                                   child: Builder(builder: (context) {
-                                    final audioLoading = context.select<CurrentMusicProvider, AudioLoadingState>((value) => value.audioLoading);
+                                    final audioLoading = context.select<
+                                            CurrentMusicProvider,
+                                            AudioLoadingState>(
+                                        (value) => value.audioLoading);
                                     Widget playbackIndicator;
 
-                                    if (audioLoading == AudioLoadingState.loading) {
+                                    if (audioLoading ==
+                                        AudioLoadingState.loading) {
                                       playbackIndicator = SizedBox(
                                         key: const Key("loading"),
-                                        height: vp(a: 60.0, b: 80.0, c: reverseProgressValue),
-                                        width: vp(a: 60.0, b: 80.0, c: reverseProgressValue),
+                                        height: vp(
+                                            a: 60.0,
+                                            b: 80.0,
+                                            c: reverseProgressValue),
+                                        width: vp(
+                                            a: 60.0,
+                                            b: 80.0,
+                                            c: reverseProgressValue),
                                         child: Center(
-                                          child: LoadingAnimationWidget.staggeredDotsWave(
-                                            color: Theme.of(context).colorScheme.secondary,
+                                          child: LoadingAnimationWidget
+                                              .staggeredDotsWave(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
                                             size: 42.0,
                                           ),
                                         ),
                                       );
-                                    } else if (audioLoading == AudioLoadingState.error) {
+                                    } else if (audioLoading ==
+                                        AudioLoadingState.error) {
                                       playbackIndicator = SizedBox(
                                         key: const Key("error"),
-                                        height: vp(a: 60.0, b: 80.0, c: reverseProgressValue),
-                                        width: vp(a: 60.0, b: 80.0, c: reverseProgressValue),
+                                        height: vp(
+                                            a: 60.0,
+                                            b: 80.0,
+                                            c: reverseProgressValue),
+                                        width: vp(
+                                            a: 60.0,
+                                            b: 80.0,
+                                            c: reverseProgressValue),
                                         child: Center(
                                           child: Icon(
                                             Icons.warning,
                                             size: 42.0,
-                                            color: Theme.of(context).colorScheme.error,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .error,
                                           ),
                                         ),
                                       );
@@ -613,11 +759,21 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                       playbackIndicator = MultiProvider(
                                         key: const Key("ready"),
                                         providers: [
-                                          StreamProvider(create: (_) => currentMusic.positionStream, initialData: currentMusic.position),
-                                          StreamProvider(create: (_) => currentMusic.isPlayingStream, initialData: currentMusic.isPlaying),
+                                          StreamProvider(
+                                              create: (_) =>
+                                                  currentMusic.positionStream,
+                                              initialData:
+                                                  currentMusic.position),
+                                          StreamProvider(
+                                              create: (_) =>
+                                                  currentMusic.isPlayingStream,
+                                              initialData:
+                                                  currentMusic.isPlaying),
                                         ],
-                                        builder: (context, snapshot) => Consumer2<bool, Duration>(
-                                          builder: (context, value1, value2, child) {
+                                        builder: (context, snapshot) =>
+                                            Consumer2<bool, Duration>(
+                                          builder:
+                                              (context, value1, value2, child) {
                                             if (value1) {
                                               playPauseAnim.forward();
                                             } else {
@@ -626,14 +782,19 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                             return Container(
                                               decoration: BoxDecoration(
                                                 color: Colors.black,
-                                                borderRadius: BorderRadius.circular(16.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(16.0),
                                               ),
                                               child: CustomPaint(
-                                                painter: MiniplayerProgressPainter(currentMusic.progress * (1 - reverseClampedProgressValue)),
+                                                painter: MiniplayerProgressPainter(
+                                                    currentMusic.progress *
+                                                        (1 -
+                                                            reverseClampedProgressValue)),
                                                 child: FloatingActionButton(
                                                   heroTag: currentMusic.playing,
                                                   onPressed: () {
-                                                    if (currentMusic.isPlaying) {
+                                                    if (currentMusic
+                                                        .isPlaying) {
                                                       currentMusic.pause();
                                                       playPauseAnim.reverse();
                                                     } else {
@@ -642,10 +803,16 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                                     }
                                                   },
                                                   elevation: 0,
-                                                  backgroundColor: Theme.of(context).colorScheme.surfaceTint.withOpacity(.3),
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .surfaceTint
+                                                          .withValues(
+                                                              alpha: .3),
                                                   child: AnimatedIcon(
                                                     progress: playPauseAnim,
-                                                    icon: AnimatedIcons.play_pause,
+                                                    icon: AnimatedIcons
+                                                        .play_pause,
                                                   ),
                                                 ),
                                               ),
@@ -656,10 +823,13 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                     }
 
                                     return PageTransitionSwitcher(
-                                      transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                                      transitionBuilder: (child,
+                                          primaryAnimation,
+                                          secondaryAnimation) {
                                         return FadeThroughTransition(
                                           animation: primaryAnimation,
-                                          secondaryAnimation: secondaryAnimation,
+                                          secondaryAnimation:
+                                              secondaryAnimation,
                                           fillColor: Colors.transparent,
                                           child: child,
                                         );
@@ -686,7 +856,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                           alignment: Alignment.bottomLeft,
                           child: SafeArea(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24.0, vertical: 12.0),
                               child: TextButton(
                                 onPressed: () {},
                                 child: Row(
@@ -695,14 +866,19 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                     Container(
                                       padding: const EdgeInsets.all(6.0),
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.secondaryContainer,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondaryContainer,
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Icon(Icons.headphones, size: 18.0, color: onSecondary),
+                                      child: Icon(Icons.headphones,
+                                          size: 18.0, color: onSecondary),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 14.0),
-                                      child: Text('Headphones', style: TextStyle(color: onSecondary)),
+                                      padding:
+                                          const EdgeInsets.only(left: 14.0),
+                                      child: Text('Headphones',
+                                          style: TextStyle(color: onSecondary)),
                                     ),
                                   ],
                                 ),
@@ -725,16 +901,21 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                             alignment: Alignment.bottomRight,
                             child: SafeArea(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0, vertical: 12.0),
                                 child: IconButton(
                                   onPressed: () {
-                                    final track = context.read<CurrentMusicProvider>().playing!;
+                                    final track = context
+                                        .read<CurrentMusicProvider>()
+                                        .playing!;
                                     LyricsView.view(track, context: context);
                                   },
                                   icon: Icon(
                                     CupertinoIcons.quote_bubble,
                                     size: 28.0,
-                                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                                   ),
                                 ),
                               ),
@@ -756,7 +937,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                             alignment: Alignment.bottomRight,
                             child: SafeArea(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0, vertical: 12.0),
                                 child: IconButton(
                                   onPressed: () {
                                     snapToQueue();
@@ -764,7 +946,9 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                   icon: Icon(
                                     CupertinoIcons.music_note_list,
                                     size: 24.0,
-                                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                                   ),
                                 ),
                               ),
@@ -800,7 +984,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                               opacity: 1 - sAnim.value.abs(),
                               child: Transform.translate(
                                 offset: Offset(
-                                    -sAnim.value * sMaxOffset / stParallax + (12.0 * queueProgressValue),
+                                    -sAnim.value * sMaxOffset / stParallax +
+                                        (12.0 * queueProgressValue),
                                     (-maxOffset + topInset + 102.0) *
                                         (!bounceUp
                                             ? !bounceDown
@@ -808,7 +993,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                                 : (1 - bounceProgressValue)
                                             : 0.0)),
                                 child: TrackInfo(
-                                  artist: currentMusic.playing?.artistsLabel ?? "?",
+                                  artist:
+                                      currentMusic.playing?.artistsLabel ?? "?",
                                   title: currentMusic.playing?.name ?? "?",
                                   p: bounceProgressValue,
                                   cp: bounceClampedProgressValue,
@@ -863,13 +1049,20 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                           Opacity(
                             opacity: 1 - sAnim.value.abs(),
                             child: Transform.translate(
-                              offset: Offset(-sAnim.value * sMaxOffset / siParallax,
-                                  !bounceUp ? (-maxOffset + topInset + 108.0) * (!bounceDown ? queueProgressValue : (1 - bounceProgressValue)) : 0.0),
+                              offset: Offset(
+                                  -sAnim.value * sMaxOffset / siParallax,
+                                  !bounceUp
+                                      ? (-maxOffset + topInset + 108.0) *
+                                          (!bounceDown
+                                              ? queueProgressValue
+                                              : (1 - bounceProgressValue))
+                                      : 0.0),
                               child: TrackImage(
                                 images: currentMusic.playing?.album?.images,
                                 p: bounceProgressValue,
                                 cp: bounceClampedProgressValue,
-                                width: vp(a: 82.0, b: 92.0, c: queueProgressValue),
+                                width:
+                                    vp(a: 82.0, b: 92.0, c: queueProgressValue),
                                 screenSize: screenSize,
                                 bottomOffset: bottomOffset,
                                 maxOffset: maxOffset,
@@ -901,7 +1094,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                     Opacity(
                       opacity: fastOpacity,
                       child: Transform.translate(
-                        offset: Offset(0, bottomOffset + (-maxOffset / 4.0 * progressValue)),
+                        offset: Offset(0,
+                            bottomOffset + (-maxOffset / 4.0 * progressValue)),
                         child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Column(
@@ -910,7 +1104,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                               const SizedBox(
                                 height: 65.0,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 24.0),
                                   child: WaveformSlider(),
                                 ),
                               ),
@@ -918,39 +1113,52 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                 stream: currentMusic.positionStream,
                                 builder: (context, snapshot) {
                                   final pos = currentMusic.position;
-                                  final dHours = (currentMusic.duration?.inHours ?? 0) > 0;
+                                  final dHours =
+                                      (currentMusic.duration?.inHours ?? 0) > 0;
 
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24.0),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(children: [
                                           if (dHours)
                                             AnimatedFlipCounter(
                                               value: pos.inHours,
                                               curve: Curves.easeIn,
-                                              textStyle: TextStyle(color: onSecondary, letterSpacing: -.5),
+                                              textStyle: TextStyle(
+                                                  color: onSecondary,
+                                                  letterSpacing: -.5),
                                             ),
                                           if (dHours) const Text(":"),
                                           AnimatedFlipCounter(
                                             value: pos.inMinutes % 60,
                                             wholeDigits: dHours ? 2 : 1,
                                             curve: Curves.easeIn,
-                                            textStyle: TextStyle(color: onSecondary, letterSpacing: -.5),
+                                            textStyle: TextStyle(
+                                                color: onSecondary,
+                                                letterSpacing: -.5),
                                           ),
                                           Text(
                                             ":",
-                                            style: TextStyle(color: onSecondary, letterSpacing: 1),
+                                            style: TextStyle(
+                                                color: onSecondary,
+                                                letterSpacing: 1),
                                           ),
                                           AnimatedFlipCounter(
                                             value: pos.inSeconds % 60,
                                             wholeDigits: 2,
-                                            textStyle: TextStyle(color: onSecondary, letterSpacing: -.5),
+                                            textStyle: TextStyle(
+                                                color: onSecondary,
+                                                letterSpacing: -.5),
                                           ),
                                         ]),
                                         Text(
-                                          currentMusic.duration?.shortFormat() ?? "0:00",
+                                          currentMusic.duration
+                                                  ?.shortFormat() ??
+                                              "0:00",
                                           style: TextStyle(color: onSecondary),
                                         ),
                                       ],
@@ -1003,12 +1211,14 @@ class MiniplayerProgressPainter extends CustomPainter {
         const Radius.circular(16.0),
       ),
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2, size.height - strokeWidth * 2),
+        Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2,
+            size.height - strokeWidth * 2),
         const Radius.circular(12.0),
       ),
-      Paint()..color = Colors.white.withOpacity(.25),
+      Paint()..color = Colors.white.withValues(alpha: .25),
     );
-    canvas.saveLayer(Rect.fromLTWH(-10, -10, size.width + 20, size.height + 20), Paint());
+    canvas.saveLayer(
+        Rect.fromLTWH(-10, -10, size.width + 20, size.height + 20), Paint());
     canvas.drawArc(
       Rect.fromLTWH(-10, -10, size.width + 20, size.height + 20),
       -1.570796,
@@ -1031,5 +1241,6 @@ class MiniplayerProgressPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant MiniplayerProgressPainter oldDelegate) => oldDelegate.progress != progress;
+  bool shouldRepaint(covariant MiniplayerProgressPainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }

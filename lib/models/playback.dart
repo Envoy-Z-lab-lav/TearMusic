@@ -12,7 +12,9 @@ class Playback {
   factory Playback.decode(Map json) {
     return Playback(
       streamUrl: json['streamUrl'],
-      waveform: json['waveform'] != null ? base64.decode(json['waveform'] as String) : List.generate(50, (index) => 10), // yes this is needed
+      waveform: json['waveform'] != null
+          ? base64.decode(json['waveform'] as String)
+          : List.generate(50, (index) => 10), // yes this is needed
     );
   }
 }

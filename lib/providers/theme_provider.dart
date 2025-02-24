@@ -13,7 +13,8 @@ class ThemeProvider extends ChangeNotifier {
   MobileRoute? _currentRoute;
   final Map<MobileRoute, ThemePageState> _pages = {};
   ThemePageState get _defaultPlaceholderPage => ThemePageState();
-  ThemePageState get _currentPage => _pages[_currentRoute] ?? _defaultPlaceholderPage;
+  ThemePageState get _currentPage =>
+      _pages[_currentRoute] ?? _defaultPlaceholderPage;
 
   ThemeData? get _appThemeB => _currentPage._appThemeB;
   set _appThemeB(value) => _currentPage._appThemeB = value;

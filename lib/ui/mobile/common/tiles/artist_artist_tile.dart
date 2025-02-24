@@ -13,7 +13,8 @@ class ArtistArtistTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        ArtistView.view(artist, context: context).then((_) => then != null ? then!() : null);
+        ArtistView.view(artist, context: context)
+            .then((_) => then != null ? then!() : null);
       },
       child: SizedBox(
         width: 100,
@@ -31,7 +32,8 @@ class ArtistArtistTile extends StatelessWidget {
                       type: MaterialType.transparency,
                       child: InkWell(
                         onTap: () {
-                          ArtistView.view(artist, context: context).then((_) => then != null ? then!() : null);
+                          ArtistView.view(artist, context: context)
+                              .then((_) => then != null ? then!() : null);
                         },
                       ),
                     ),

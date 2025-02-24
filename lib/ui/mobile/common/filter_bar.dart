@@ -48,14 +48,14 @@ class _FilterBarState extends State<FilterBar> {
       indicatorSize: TabBarIndicatorSize.tab,
       labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
       labelColor: Theme.of(context).colorScheme.secondary,
-      unselectedLabelColor: Colors.white.withOpacity(0.65),
+      unselectedLabelColor: Colors.white.withValues(alpha: 0.65),
       // Indicator
       indicatorPadding: const EdgeInsets.symmetric(vertical: 8),
       indicator: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
+        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.25),
         borderRadius: BorderRadius.circular(45.0),
       ),
-      overlayColor: MaterialStateProperty.all(const Color(0x00000000)),
+      overlayColor: WidgetStateProperty.all(const Color(0x00000000)),
       // Tabs
       padding: EdgeInsets.zero,
       tabs: widget.items,
@@ -74,19 +74,26 @@ class _FilterBarState extends State<FilterBar> {
                   // avoid fading over selected tab
                   return ShaderMask(
                       shaderCallback: (Rect bounds) {
-                        final Color bg = Theme.of(context).scaffoldBackgroundColor;
+                        final Color bg =
+                            Theme.of(context).scaffoldBackgroundColor;
                         final double index = widget.controller.animation!.value;
-                        return LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [
-                          index < 0.2 ? Colors.transparent : bg,
-                          Colors.transparent,
-                          Colors.transparent,
-                          index > widget.controller.length - 1.2 ? Colors.transparent : bg
-                        ], stops: const [
-                          0,
-                          0.1,
-                          0.9,
-                          1
-                        ]).createShader(bounds);
+                        return LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              index < 0.2 ? Colors.transparent : bg,
+                              Colors.transparent,
+                              Colors.transparent,
+                              index > widget.controller.length - 1.2
+                                  ? Colors.transparent
+                                  : bg
+                            ],
+                            stops: const [
+                              0,
+                              0.1,
+                              0.9,
+                              1
+                            ]).createShader(bounds);
                       },
                       blendMode: BlendMode.dstOut,
                       child: child);

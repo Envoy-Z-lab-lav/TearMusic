@@ -24,7 +24,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   var _state = LoginState.none;
   late AnimationController animation;
   late StreamSubscription linkSub;
@@ -36,7 +37,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       if (event != null && event.queryParameters["access_token"] != null) {
         linkSub.cancel();
         Provider.of<UserProvider>(context, listen: false)
-            .loginCallback(event.queryParameters["access_token"], event.queryParameters["refresh_token"])
+            .loginCallback(event.queryParameters["access_token"],
+                event.queryParameters["refresh_token"])
             .then((_) => setState(() => _state = LoginState.success));
       } else {
         setState(() => _state = LoginState.failed);
@@ -46,7 +48,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       setState(() => _state = LoginState.failed);
     });
 
-    animation = AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    animation =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
   }
 
   @override
@@ -63,13 +66,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       case LoginState.progress:
         loginStateWidget = Scaffold(
           body: Center(
-            child: Lottie.network("https://assets10.lottiefiles.com/packages/lf20_rwq6ciql.json"),
+            child: Lottie.network(
+                "https://assets10.lottiefiles.com/packages/lf20_rwq6ciql.json"),
           ),
         );
         break;
       case LoginState.success:
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          Future.delayed(const Duration(seconds: 1)).then((_) => animation.forward());
+          Future.delayed(const Duration(seconds: 1))
+              .then((_) => animation.forward());
         });
         loginStateWidget = Scaffold(
           body: Center(
@@ -78,11 +83,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               children: [
                 SizedBox(
                   width: 400,
-                  child: Lottie.network("https://assets2.lottiefiles.com/packages/lf20_wkebwzpz.json", controller: animation),
+                  child: Lottie.network(
+                      "https://assets2.lottiefiles.com/packages/lf20_wkebwzpz.json",
+                      controller: animation),
                 ),
                 AnimatedBuilder(
                   animation: animation,
-                  builder: (context, child) => Opacity(opacity: (animation.value * 2 - 1).clamp(0, 1), child: child),
+                  builder: (context, child) => Opacity(
+                      opacity: (animation.value * 2 - 1).clamp(0, 1),
+                      child: child),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 24.0),
                     child: Column(
@@ -92,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           "Welcome back, ${context.read<UserProvider>().username}!",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.white.withOpacity(.7),
+                            color: Colors.white.withValues(alpha: .7),
                             fontWeight: FontWeight.w600,
                             fontSize: 24.0,
                           ),
@@ -104,12 +113,21 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             iconSize: 32.0,
                             padding: const EdgeInsets.all(12.0),
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
-                              foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondaryContainer),
+                              backgroundColor: WidgetStateProperty.all(
+                                  Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer),
+                              foregroundColor: WidgetStateProperty.all(
+                                  Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer),
                             ),
                             onPressed: () {
                               context.read<UserProvider>().loggedIn = true;
-                              Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (_) => const NavigationScreen()));
+                              Navigator.of(context).pushReplacement(
+                                  CupertinoPageRoute(
+                                      builder: (_) =>
+                                          const NavigationScreen()));
                             },
                           ),
                         ),
@@ -124,7 +142,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         break;
       case LoginState.failed:
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          Future.delayed(const Duration(seconds: 1)).then((_) => animation.forward());
+          Future.delayed(const Duration(seconds: 1))
+              .then((_) => animation.forward());
         });
         loginStateWidget = Scaffold(
           body: Center(
@@ -133,17 +152,21 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               children: [
                 SizedBox(
                   width: 150,
-                  child: Lottie.network("https://assets10.lottiefiles.com/temp/lf20_yYJhpG.json", controller: animation),
+                  child: Lottie.network(
+                      "https://assets10.lottiefiles.com/temp/lf20_yYJhpG.json",
+                      controller: animation),
                 ),
                 AnimatedBuilder(
                   animation: animation,
-                  builder: (context, child) => Opacity(opacity: (animation.value * 2 - 1).clamp(0, 1), child: child),
+                  builder: (context, child) => Opacity(
+                      opacity: (animation.value * 2 - 1).clamp(0, 1),
+                      child: child),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 24.0),
                     child: Text(
                       "Login failed. Please try again later!",
                       style: TextStyle(
-                        color: Colors.white.withOpacity(.5),
+                        color: Colors.white.withValues(alpha: .5),
                         fontWeight: FontWeight.w500,
                         fontSize: 16.0,
                       ),
@@ -179,7 +202,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
                     ),
                     Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 32.0, vertical: 24.0),
                       elevation: 1,
                       child: Padding(
                         padding: const EdgeInsets.all(24.0),
@@ -191,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               Text(
                                 "Please log in to continue...",
                                 style: TextStyle(
-                                  color: Colors.white.withOpacity(.7),
+                                  color: Colors.white.withValues(alpha: .7),
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -199,16 +223,25 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 padding: const EdgeInsets.only(top: 12.0),
                                 child: TextButton.icon(
                                   icon: const Icon(Ionicons.logo_discord),
-                                  label: const Text("Login with Discord", style: TextStyle(fontWeight: FontWeight.w600)),
+                                  label: const Text("Login with Discord",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600)),
                                   style: ButtonStyle(
-                                    padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0)),
-                                    backgroundColor: MaterialStateProperty.all(const Color(0xff5865F2)),
-                                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                                    padding: WidgetStateProperty.all(
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 12.0, vertical: 6.0)),
+                                    backgroundColor: WidgetStateProperty.all(
+                                        const Color(0xff5865F2)),
+                                    foregroundColor:
+                                        WidgetStateProperty.all(Colors.white),
                                   ),
                                   onPressed: () {
-                                    setState(() => _state = LoginState.progress);
-                                    Future.delayed(const Duration(seconds: 1)).then((_) {
-                                      launchUrl(Uri.parse(discordLoginUrl), mode: LaunchMode.externalApplication);
+                                    setState(
+                                        () => _state = LoginState.progress);
+                                    Future.delayed(const Duration(seconds: 1))
+                                        .then((_) {
+                                      launchUrl(Uri.parse(discordLoginUrl),
+                                          mode: LaunchMode.externalApplication);
                                     });
                                   },
                                 ),

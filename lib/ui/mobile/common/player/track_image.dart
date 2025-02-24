@@ -36,14 +36,16 @@ class TrackImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final radius = vp(a: 14.0, b: 32.0, c: cp);
-    final borderRadius = SmoothBorderRadius(cornerRadius: radius, cornerSmoothing: 1.0);
+    final borderRadius =
+        SmoothBorderRadius(cornerRadius: radius, cornerSmoothing: 1.0);
     final size = vp(a: width, b: screenSize.width - 84.0, c: cp);
     const imgSize = Size(400, 400);
 
     return Transform.translate(
       offset: Offset(0, bottomOffset + (-maxOffset / 2.15 * p.clamp(0, 2))),
       child: Padding(
-        padding: EdgeInsets.all(12.0 * (1 - cp)).add(EdgeInsets.only(left: 42.0 * cp)),
+        padding: EdgeInsets.all(12.0 * (1 - cp))
+            .add(EdgeInsets.only(left: 42.0 * cp)),
         child: Align(
           alignment: Alignment.bottomLeft,
           child: SizedBox(
@@ -52,7 +54,8 @@ class TrackImage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(12.0 * (1 - cp)),
               child: PageTransitionSwitcher(
-                transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                transitionBuilder:
+                    (child, primaryAnimation, secondaryAnimation) {
                   return FadeThroughTransition(
                     fillColor: Colors.transparent,
                     animation: primaryAnimation,
@@ -61,12 +64,14 @@ class TrackImage extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  key: Key(images != null ? images!.forSize(imgSize) : "imgcontainer"),
+                  key: Key(images != null
+                      ? images!.forSize(imgSize)
+                      : "imgcontainer"),
                   decoration: ShapeDecoration(
                     shape: SmoothRectangleBorder(borderRadius: borderRadius),
                     shadows: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(.25 * cp),
+                        color: Colors.black.withValues(alpha: .25 * cp),
                         blurRadius: 24.0,
                         offset: const Offset(0.0, 4.0),
                       ),

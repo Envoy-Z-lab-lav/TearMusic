@@ -30,7 +30,8 @@ class Range {
     return Range(start: start, end: end);
   }
 
-  Range clamp(int min, int max) => Range(start: (start ?? min).clamp(min, max), end: (end ?? max).clamp(min, max));
+  Range clamp(int min, int max) => Range(
+      start: (start ?? min).clamp(min, max), end: (end ?? max).clamp(min, max));
 }
 
 class ProxyRequestHandler {
@@ -67,7 +68,10 @@ class ProxyRequestHandler {
 
   // Get /stream/{id} from path
   String? _streamId(Uri requestUri) {
-    if (requestUri.pathSegments.length < 2 || requestUri.pathSegments[0] != "stream") return null;
+    if (requestUri.pathSegments.length < 2 ||
+        requestUri.pathSegments[0] != "stream") {
+      return null;
+    }
 
     return requestUri.pathSegments[1];
   }
@@ -90,13 +94,16 @@ class ProxyRequestHandler {
     final range = Range.fromHeaders(request.headers).clamp(0, sourceSize - 1);
     final size = range.end! + 1 - range.start!;
     request.response.contentLength = size;
-    request.response.headers.add(HttpHeaders.contentRangeHeader, "bytes ${range.start!}-${range.end}/$sourceSize");
+    request.response.headers.add(HttpHeaders.contentRangeHeader,
+        "bytes ${range.start!}-${range.end}/$sourceSize");
 
     int written = 0;
 
     // Respond with an audio stream
     await for (final chunk in source.read(seek: range.start!)) {
-      final copy = chunk.getRange(0, (range.end! + 1 - written).clamp(0, chunk.length)).toList();
+      final copy = chunk
+          .getRange(0, (range.end! + 1 - written).clamp(0, chunk.length))
+          .toList();
       request.response.add(copy);
       written += copy.length;
 
@@ -112,7 +119,8 @@ class ProxyRequestHandler {
     // Cache control
     request.response.headers.add(HttpHeaders.pragmaHeader, "no-cache");
     request.response.headers.add(HttpHeaders.cacheControlHeader, "no-cache");
-    request.response.headers.add(HttpHeaders.expiresHeader, "Mon, 26 Jul 1997 05:00:00 GMT");
+    request.response.headers
+        .add(HttpHeaders.expiresHeader, "Mon, 26 Jul 1997 05:00:00 GMT");
 
     // ICY Default
     request.response.headers.add("icy-pub", "0");

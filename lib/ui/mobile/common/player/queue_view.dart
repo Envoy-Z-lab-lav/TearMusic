@@ -30,12 +30,16 @@ class TrackData extends StatelessWidget {
   Widget _buildChild(BuildContext context, ReorderableItemState state) {
     BoxDecoration decoration;
 
-    if (state == ReorderableItemState.dragProxy || state == ReorderableItemState.dragProxyFinished) {
+    if (state == ReorderableItemState.dragProxy ||
+        state == ReorderableItemState.dragProxyFinished) {
       // slightly transparent background white dragging (just like on iOS)
-      decoration = BoxDecoration(color: Theme.of(context).colorScheme.onSecondary.withOpacity(.95));
+      decoration = BoxDecoration(
+          color:
+              Theme.of(context).colorScheme.onSecondary.withValues(alpha: .95));
     } else {
       bool placeholder = state == ReorderableItemState.placeholder;
-      decoration = BoxDecoration(color: placeholder ? null : Colors.transparent);
+      decoration =
+          BoxDecoration(color: placeholder ? null : Colors.transparent);
     }
 
     if (track == null) {
@@ -78,9 +82,7 @@ class TrackData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableItem(
-        key: itemKey,
-        childBuilder: _buildChild);
+    return ReorderableItem(key: itemKey, childBuilder: _buildChild);
   }
 }
 
@@ -116,10 +118,16 @@ class _QueueViewState extends State<QueueView> {
   void buildQueue() async {
     final userProvider = context.read<UserProvider>();
 
-    final items = await context.read<MusicInfoProvider>().batchTracks(userProvider.getAllTracks());
+    final items = await context
+        .read<MusicInfoProvider>()
+        .batchTracks(userProvider.getAllTracks());
 
-    final playerNormalQueue = userProvider.playerInfo.normalQueue.map((e) => items.firstWhere((element) => element.id == e)).toList();
-    final playerPrimaryQueue = userProvider.playerInfo.primaryQueue.map((e) => items.firstWhere((element) => element.id == e)).toList();
+    final playerNormalQueue = userProvider.playerInfo.normalQueue
+        .map((e) => items.firstWhere((element) => element.id == e))
+        .toList();
+    final playerPrimaryQueue = userProvider.playerInfo.primaryQueue
+        .map((e) => items.firstWhere((element) => element.id == e))
+        .toList();
     final fullQueue = [...playerPrimaryQueue, ...playerNormalQueue];
 
     primaryQueueLength = playerPrimaryQueue.length;
@@ -127,8 +135,11 @@ class _QueueViewState extends State<QueueView> {
     queueViewItems = fullQueue
         .asMap()
         .entries
-        .map((entry) =>
-            TrackData(track: entry.value, itemIndex: entry.key, isPrimary: entry.key < playerPrimaryQueue.length, itemKey: ValueKey(entry.key)))
+        .map((entry) => TrackData(
+            track: entry.value,
+            itemIndex: entry.key,
+            isPrimary: entry.key < playerPrimaryQueue.length,
+            itemKey: ValueKey(entry.key)))
         .toList();
 
     if (primaryQueueLength != 0) {
@@ -141,7 +152,7 @@ class _QueueViewState extends State<QueueView> {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-              color: Colors.grey.withOpacity(.5),
+              color: Colors.grey.withValues(alpha: .5),
             ),
             height: 4,
           ),
@@ -221,13 +232,18 @@ class _QueueViewState extends State<QueueView> {
 
     if (primaryQueueLength != 0) {
       if (moveFromIndex >= primaryQueueLength) {
-        moveFromIndex -= primaryQueueLength + (moveFromIndex != primaryQueueLength ? 1 : 0);
+        moveFromIndex -=
+            primaryQueueLength + (moveFromIndex != primaryQueueLength ? 1 : 0);
       } else {
         moveFrom = PlayerInfoReorderMoveType.primary;
       }
 
-      if (moveToIndex >= primaryQueueLength + (moveFrom == PlayerInfoReorderMoveType.normal ? 1 : 0) && moveTo != PlayerInfoReorderMoveType.primary) {
-        moveToIndex -= primaryQueueLength + (moveFrom == PlayerInfoReorderMoveType.normal ? 1 : 0);
+      if (moveToIndex >=
+              primaryQueueLength +
+                  (moveFrom == PlayerInfoReorderMoveType.normal ? 1 : 0) &&
+          moveTo != PlayerInfoReorderMoveType.primary) {
+        moveToIndex -= primaryQueueLength +
+            (moveFrom == PlayerInfoReorderMoveType.normal ? 1 : 0);
       } else {
         moveTo = PlayerInfoReorderMoveType.primary;
       }
@@ -235,7 +251,9 @@ class _QueueViewState extends State<QueueView> {
 
     log("[Queue Reorder] ${moveFrom.name} $moveFromIndex ($realMoveFromIndex) --> ${moveTo.name} $moveToIndex ($realMoveToIndex)");
 
-    context.read<UserProvider>().postReorder(moveFromIndex, moveToIndex, DateTime.now().millisecondsSinceEpoch, moveFrom: moveFrom, moveTo: moveTo);
+    context.read<UserProvider>().postReorder(
+        moveFromIndex, moveToIndex, DateTime.now().millisecondsSinceEpoch,
+        moveFrom: moveFrom, moveTo: moveTo);
     buildQueue();
     //setState(() {});
 
@@ -246,14 +264,17 @@ class _QueueViewState extends State<QueueView> {
   Widget build(BuildContext context) {
     //log("[Queue View] rebuild");
 
-    if (context.read<UserProvider>().playerInfo.version != lastVersion) buildQueue();
+    if (context.read<UserProvider>().playerInfo.version != lastVersion) {
+      buildQueue();
+    }
 
     return SafeArea(
       bottom: false,
       child: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 70),
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(38.0), topRight: Radius.circular(38.0)),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(38.0), topRight: Radius.circular(38.0)),
           child: ReorderableList(
             onReorder: _reorderCallback,
             onReorderDone: _reorderDone,

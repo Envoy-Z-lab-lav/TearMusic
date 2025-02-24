@@ -6,13 +6,15 @@ class Model {
 
   Model({this.json, required this.id, required this.type, this.key});
 
-  static List<String> encodeIdList(List<Model> models) => models.map((e) => "$e").toList();
+  static List<String> encodeIdList(List<Model> models) =>
+      models.map((e) => "$e").toList();
 
   bool match(String filter) {
     if (key == null || filter == "") return false;
     filter = filter.toLowerCase();
     filter = SearchUtils.specialChars(filter);
-    return filter.split(" ").every((variation) => SearchUtils.specialChars(key!.toLowerCase()).contains(variation));
+    return filter.split(" ").every((variation) =>
+        SearchUtils.specialChars(key!.toLowerCase()).contains(variation));
   }
 
   @override

@@ -19,7 +19,8 @@ class BaseApi {
   }
 
   void destroyToken() async {
-    http.get(Uri.parse("$url/auth/destroy?refresh_token=${Uri.encodeComponent(_refreshToken!)}"));
+    http.get(Uri.parse(
+        "$url/auth/destroy?refresh_token=${Uri.encodeComponent(_refreshToken!)}"));
   }
 
   Future<String> getToken({int tries = 0}) async {
@@ -28,9 +29,11 @@ class BaseApi {
     final claims = Jwt.parseJwt(_accessToken!);
 
     // Jwt expired, generate new one
-    if (claims["iat"] + 1800 <= (DateTime.now().millisecondsSinceEpoch / 1000).floor()) {
+    if (claims["iat"] + 1800 <=
+        (DateTime.now().millisecondsSinceEpoch / 1000).floor()) {
       log("Refreshing token...");
-      final res = await http.get(Uri.parse("$url/auth/refresh?refresh_token=${Uri.encodeComponent(_refreshToken!)}"));
+      final res = await http.get(Uri.parse(
+          "$url/auth/refresh?refresh_token=${Uri.encodeComponent(_refreshToken!)}"));
 
       if (res.statusCode != 200) {
         log("Failed to refresh token (${res.statusCode})");
@@ -44,7 +47,9 @@ class BaseApi {
       _accessToken = token["access_token"];
       _refreshToken = token["refresh_token"];
 
-      refreshCallback != null ? refreshCallback!(_accessToken ?? "", _refreshToken ?? "") : null;
+      refreshCallback != null
+          ? refreshCallback!(_accessToken ?? "", _refreshToken ?? "")
+          : null;
     }
 
     return _accessToken!;

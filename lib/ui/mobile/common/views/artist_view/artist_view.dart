@@ -32,7 +32,9 @@ class ArtistView extends StatefulWidget {
   static Future<void> view(MusicArtist value, {required BuildContext context}) {
     final nav = context.read<NavigatorProvider>();
     final theme = context.read<ThemeProvider>();
-    return nav.pushModal(builder: (context) => ArtistView(value), uri: value.uri).then((value) {
+    return nav
+        .pushModal(builder: (context) => ArtistView(value), uri: value.uri)
+        .then((value) {
       theme.resetTheme();
       return value;
     });
@@ -97,7 +99,10 @@ class _ArtistViewState extends State<ArtistView> {
           return Scaffold(
             body: Center(
               child: LoadingAnimationWidget.staggeredDotsWave(
-                color: Theme.of(context).colorScheme.secondary.withOpacity(.2),
+                color: Theme.of(context)
+                    .colorScheme
+                    .secondary
+                    .withValues(alpha: .2),
                 size: 64.0,
               ),
             ),
@@ -153,7 +158,8 @@ class _ArtistViewState extends State<ArtistView> {
                                         end: Alignment.bottomCenter,
                                         stops: const [.5, 1],
                                         colors: [
-                                          theme.scaffoldBackgroundColor.withOpacity(0),
+                                          theme.scaffoldBackgroundColor
+                                              .withValues(alpha: 0),
                                           theme.scaffoldBackgroundColor,
                                         ],
                                       ),
@@ -174,7 +180,8 @@ class _ArtistViewState extends State<ArtistView> {
                             child: Align(
                               alignment: Alignment.topCenter,
                               child: LoadingAnimationWidget.staggeredDotsWave(
-                                color: theme.colorScheme.secondary.withOpacity(.2),
+                                color: theme.colorScheme.secondary
+                                    .withValues(alpha: .2),
                                 size: 64.0,
                               ),
                             ),
@@ -197,7 +204,8 @@ class _ArtistViewState extends State<ArtistView> {
                       //   ),
                       if (snapshot.hasData && details.albums.isNotEmpty)
                         SliverPadding(
-                          padding: const EdgeInsets.only(top: 12.0, left: 16.0, right: 16.0),
+                          padding: const EdgeInsets.only(
+                              top: 12.0, left: 16.0, right: 16.0),
                           sliver: SliverToBoxAdapter(
                             child: Row(
                               children: [
@@ -227,7 +235,9 @@ class _ArtistViewState extends State<ArtistView> {
                             child: LatestRelease(
                               details.albums.first,
                               then: () {
-                                context.read<ThemeProvider>().tempNavTheme(theme);
+                                context
+                                    .read<ThemeProvider>()
+                                    .tempNavTheme(theme);
                               },
                             ),
                           ),
@@ -235,34 +245,46 @@ class _ArtistViewState extends State<ArtistView> {
                       if (snapshot.hasData && details.tracks.isNotEmpty)
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Card(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 8.0),
+                                    padding: const EdgeInsets.only(
+                                        top: 4.0, left: 16.0, right: 8.0),
                                     child: Row(
                                       children: [
                                         const Expanded(
                                           child: Text(
                                             "Top Songs",
-                                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16.0),
                                           ),
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.of(context).push(CupertinoPageRoute(
+                                            Navigator.of(context)
+                                                .push(CupertinoPageRoute(
                                               builder: (context) => Theme(
                                                 data: theme,
-                                                child: ContentListView<MusicTrack>(
-                                                  itemBuilder: (context, item) => ArtistTrackTile(item),
-                                                  retriever: () async => details.tracks,
-                                                  loadingWidget: const TrackLoadingTile(itemCount: 8),
+                                                child:
+                                                    ContentListView<MusicTrack>(
+                                                  itemBuilder:
+                                                      (context, item) =>
+                                                          ArtistTrackTile(item),
+                                                  retriever: () async =>
+                                                      details.tracks,
+                                                  loadingWidget:
+                                                      const TrackLoadingTile(
+                                                          itemCount: 8),
                                                   title: Text(
                                                     "Top Songs by ${widget.artist.name}",
                                                     style: const TextStyle(
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
@@ -274,22 +296,32 @@ class _ArtistViewState extends State<ArtistView> {
                                       ],
                                     ),
                                   ),
-                                  ...details.tracks.sublist(0, math.min(details.tracks.length, 5)).map((e) => ArtistTrackTile(e)),
+                                  ...details.tracks
+                                      .sublist(
+                                          0, math.min(details.tracks.length, 5))
+                                      .map((e) => ArtistTrackTile(e)),
                                 ],
                               ),
                             ),
                           ),
                         ),
-                      if (snapshot.hasData && details.albums.any((e) => e.trackCount > 1))
+                      if (snapshot.hasData &&
+                          details.albums.any((e) => e.trackCount > 1))
                         SliverToBoxAdapter(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Padding(
-                                padding: EdgeInsets.only(top: 12.0, bottom: 8.0, left: 16.0, right: 8.0),
+                                padding: EdgeInsets.only(
+                                    top: 12.0,
+                                    bottom: 8.0,
+                                    left: 16.0,
+                                    right: 8.0),
                                 child: Text(
                                   "Albums",
-                                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.0),
                                 ),
                               ),
                               SizedBox(
@@ -298,10 +330,16 @@ class _ArtistViewState extends State<ArtistView> {
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     const SizedBox(width: 16.0),
-                                    ...details.albums.where((e) => e.trackCount > 1).map((e) => Padding(
-                                          padding: const EdgeInsets.only(right: 12.0),
-                                          child: ArtistAlbumTile(e, then: () => context.read<ThemeProvider>().tempNavTheme(theme)),
-                                        )),
+                                    ...details.albums
+                                        .where((e) => e.trackCount > 1)
+                                        .map((e) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 12.0),
+                                              child: ArtistAlbumTile(e,
+                                                  then: () => context
+                                                      .read<ThemeProvider>()
+                                                      .tempNavTheme(theme)),
+                                            )),
                                     const SizedBox(width: 16.0),
                                   ],
                                 ),
@@ -309,16 +347,23 @@ class _ArtistViewState extends State<ArtistView> {
                             ],
                           ),
                         ),
-                      if (snapshot.hasData && details.albums.any((e) => e.trackCount == 1))
+                      if (snapshot.hasData &&
+                          details.albums.any((e) => e.trackCount == 1))
                         SliverToBoxAdapter(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Padding(
-                                padding: EdgeInsets.only(top: 12.0, bottom: 8.0, left: 16.0, right: 8.0),
+                                padding: EdgeInsets.only(
+                                    top: 12.0,
+                                    bottom: 8.0,
+                                    left: 16.0,
+                                    right: 8.0),
                                 child: Text(
                                   "Singles",
-                                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.0),
                                 ),
                               ),
                               SizedBox(
@@ -327,10 +372,16 @@ class _ArtistViewState extends State<ArtistView> {
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     const SizedBox(width: 16.0),
-                                    ...details.albums.where((e) => e.trackCount == 1).map((e) => Padding(
-                                          padding: const EdgeInsets.only(right: 12.0),
-                                          child: ArtistAlbumTile.small(e, then: () => context.read<ThemeProvider>().tempNavTheme(theme)),
-                                        )),
+                                    ...details.albums
+                                        .where((e) => e.trackCount == 1)
+                                        .map((e) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 12.0),
+                                              child: ArtistAlbumTile.small(e,
+                                                  then: () => context
+                                                      .read<ThemeProvider>()
+                                                      .tempNavTheme(theme)),
+                                            )),
                                     const SizedBox(width: 16.0),
                                   ],
                                 ),
@@ -344,10 +395,16 @@ class _ArtistViewState extends State<ArtistView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Padding(
-                                padding: EdgeInsets.only(top: 12.0, bottom: 8.0, left: 16.0, right: 8.0),
+                                padding: EdgeInsets.only(
+                                    top: 12.0,
+                                    bottom: 8.0,
+                                    left: 16.0,
+                                    right: 8.0),
                                 child: Text(
                                   "Similar Artists",
-                                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.0),
                                 ),
                               ),
                               SizedBox(
@@ -357,8 +414,12 @@ class _ArtistViewState extends State<ArtistView> {
                                   children: [
                                     const SizedBox(width: 16.0),
                                     ...details.related.map((e) => Padding(
-                                          padding: const EdgeInsets.only(right: 12.0),
-                                          child: ArtistArtistTile(e, then: () => context.read<ThemeProvider>().tempNavTheme(theme)),
+                                          padding: const EdgeInsets.only(
+                                              right: 12.0),
+                                          child: ArtistArtistTile(e,
+                                              then: () => context
+                                                  .read<ThemeProvider>()
+                                                  .tempNavTheme(theme)),
                                         )),
                                     const SizedBox(width: 16.0),
                                   ],
@@ -373,10 +434,16 @@ class _ArtistViewState extends State<ArtistView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Padding(
-                                padding: EdgeInsets.only(top: 12.0, bottom: 8.0, left: 16.0, right: 8.0),
+                                padding: EdgeInsets.only(
+                                    top: 12.0,
+                                    bottom: 8.0,
+                                    left: 16.0,
+                                    right: 8.0),
                                 child: Text(
                                   "Appears On",
-                                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.0),
                                 ),
                               ),
                               SizedBox(
@@ -386,8 +453,12 @@ class _ArtistViewState extends State<ArtistView> {
                                   children: [
                                     const SizedBox(width: 16.0),
                                     ...details.appearsOn.map((e) => Padding(
-                                          padding: const EdgeInsets.only(right: 12.0),
-                                          child: ArtistAlbumTile.small(e, then: () => context.read<ThemeProvider>().tempNavTheme(theme)),
+                                          padding: const EdgeInsets.only(
+                                              right: 12.0),
+                                          child: ArtistAlbumTile.small(e,
+                                              then: () => context
+                                                  .read<ThemeProvider>()
+                                                  .tempNavTheme(theme)),
                                         )),
                                     const SizedBox(width: 16.0),
                                   ],

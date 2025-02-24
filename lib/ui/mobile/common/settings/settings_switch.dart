@@ -14,12 +14,16 @@ class SettingsSwitchTile extends StatelessWidget {
   final bool value;
   final Function(bool) onChanged;
 
-  Color? Function(Set<MaterialState>) switchColor(BuildContext context, double opacity) {
+  Color? Function(Set<WidgetState>) switchColor(
+      BuildContext context, double opacity) {
     return (states) {
-      if (states.contains(MaterialState.selected)) {
-        return Theme.of(context).colorScheme.primary.withOpacity(opacity);
+      if (states.contains(WidgetState.selected)) {
+        return Theme.of(context).colorScheme.primary.withValues(alpha: opacity);
       } else {
-        return Theme.of(context).colorScheme.secondary.withOpacity(opacity);
+        return Theme.of(context)
+            .colorScheme
+            .secondary
+            .withValues(alpha: opacity);
       }
     };
   }
@@ -28,8 +32,8 @@ class SettingsSwitchTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SwitchTheme(
       data: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith(switchColor(context, 1.0)),
-        trackColor: MaterialStateProperty.resolveWith(switchColor(context, 0.5)),
+        thumbColor: WidgetStateProperty.resolveWith(switchColor(context, 1.0)),
+        trackColor: WidgetStateProperty.resolveWith(switchColor(context, 0.5)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -43,11 +47,15 @@ class SettingsSwitchTile extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 15.0),
                     ),
                     Text(
                       desc,
-                      style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 13.0, color: Colors.grey),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 13.0,
+                          color: Colors.grey),
                     ),
                   ],
                 ),

@@ -44,13 +44,15 @@ class TopResultContainer extends StatelessWidget {
                   Expanded(
                     child: Text(
                       "Top $kind",
-                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 16.0),
                     ),
                   ),
                   TextButton(
                     onPressed: () {
                       tabController.animateTo(index);
-                      pageController.animateToPage(index, curve: Curves.easeIn, duration: kTabScrollDuration);
+                      pageController.animateToPage(index,
+                          curve: Curves.easeIn, duration: kTabScrollDuration);
                     },
                     child: const Text("Show All"),
                   )

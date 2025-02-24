@@ -5,7 +5,8 @@ class Images {
   final List<InternalImage> _internal;
 
   Images({required List<InternalImage> images}) : _internal = images {
-    _internal.sort((a, b) => (a.height * a.width).compareTo(b.height * b.width));
+    _internal
+        .sort((a, b) => (a.height * a.width).compareTo(b.height * b.width));
     assert(_internal.isNotEmpty);
   }
 

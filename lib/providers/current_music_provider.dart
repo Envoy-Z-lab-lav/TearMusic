@@ -9,14 +9,16 @@ import 'package:tearmusic/providers/music_info_provider.dart';
 enum AudioLoadingState { ready, loading, error }
 
 class CurrentMusicProvider extends ChangeNotifier {
-  CurrentMusicProvider({required MusicInfoProvider musicApi}) : _player = VirtualPlayer(musicApi: musicApi);
+  CurrentMusicProvider({required MusicInfoProvider musicApi})
+      : _player = VirtualPlayer(musicApi: musicApi);
 
   final VirtualPlayer _player;
 
   MusicTrack? get playing => _currentTrack;
   MusicTrack? _currentTrack;
 
-  double get progress => _player.position.inMilliseconds / (_player.duration?.inMilliseconds ?? 0);
+  double get progress =>
+      _player.position.inMilliseconds / (_player.duration?.inMilliseconds ?? 0);
   Duration get position => _player.position;
   Stream<Duration> get positionStream => _player.positionStream;
   bool get isPlaying => _player.isPlaying;

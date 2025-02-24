@@ -3,14 +3,17 @@ import 'package:provider/provider.dart';
 import 'package:tearmusic/models/music/lyrics.dart';
 import 'package:tearmusic/providers/current_music_provider.dart';
 
-Widget Function(BuildContext, int) subtitleListBuilder(List<TimedSegment> subtitle) {
+Widget Function(BuildContext, int) subtitleListBuilder(
+    List<TimedSegment> subtitle) {
   return (context, index) {
     final currentMusic = context.read<CurrentMusicProvider>();
 
     final subtitleLine = subtitle[index];
     final subtitleNext = subtitle[(index + 1).clamp(0, subtitle.length - 1)];
-    final progress = subtitleLine.offset.inMilliseconds / (currentMusic.duration?.inMilliseconds ?? 1);
-    final progressEnd = (subtitleNext.offset.inMilliseconds - 200) / (currentMusic.duration?.inMilliseconds ?? 1);
+    final progress = subtitleLine.offset.inMilliseconds /
+        (currentMusic.duration?.inMilliseconds ?? 1);
+    final progressEnd = (subtitleNext.offset.inMilliseconds - 200) /
+        (currentMusic.duration?.inMilliseconds ?? 1);
 
     // if (actives[index][0] != (animation.value > progress)) {
     //   actives[index][0] = animation.value > progress;
@@ -26,7 +29,8 @@ Widget Function(BuildContext, int) subtitleListBuilder(List<TimedSegment> subtit
       stream: currentMusic.positionStream,
       builder: (context, snapshot) {
         final value = snapshot.hasData && currentMusic.duration != null
-            ? snapshot.data!.inMilliseconds / (currentMusic.duration?.inMilliseconds ?? 1)
+            ? snapshot.data!.inMilliseconds /
+                (currentMusic.duration?.inMilliseconds ?? 1)
             : 0.0;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -37,9 +41,15 @@ Widget Function(BuildContext, int) subtitleListBuilder(List<TimedSegment> subtit
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 500),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
               decoration: BoxDecoration(
-                color: value > progress && value < progressEnd ? Theme.of(context).colorScheme.secondary.withOpacity(.1) : Colors.transparent,
+                color: value > progress && value < progressEnd
+                    ? Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withValues(alpha: .1)
+                    : Colors.transparent,
                 borderRadius: BorderRadius.circular(12.0),
               ),
               child: AnimatedDefaultTextStyle(
@@ -49,15 +59,22 @@ Widget Function(BuildContext, int) subtitleListBuilder(List<TimedSegment> subtit
                       ? value < progressEnd
                           ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.secondary
-                      : Theme.of(context).colorScheme.secondary.withOpacity(.3),
-                  fontFamily: Theme.of(context).textTheme.bodyMedium!.fontFamily,
+                      : Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withValues(alpha: .3),
+                  fontFamily:
+                      Theme.of(context).textTheme.bodyMedium!.fontFamily,
                   fontWeight: FontWeight.bold,
                   fontSize: 22.0,
                   shadows: [
                     Shadow(
                       offset: const Offset(5.0, 6.0),
                       blurRadius: 0.0,
-                      color: Theme.of(context).colorScheme.secondary.withOpacity(value > progressEnd ? .15 : 0),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withValues(alpha: value > progressEnd ? .15 : 0),
                     ),
                   ],
                 ),

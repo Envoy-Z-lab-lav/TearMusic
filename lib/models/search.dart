@@ -10,22 +10,31 @@ class SearchResults {
   final List<MusicAlbum> albums;
   final List<MusicArtist> artists;
 
-  SearchResults({required this.tracks, required this.playlists, required this.albums, required this.artists});
+  SearchResults(
+      {required this.tracks,
+      required this.playlists,
+      required this.albums,
+      required this.artists});
 
   factory SearchResults.decode(Map json) {
     return SearchResults(
       tracks: MusicTrack.decodeList((json["tracks"] as List).cast<Map>()),
-      playlists: MusicPlaylist.decodeList((json["playlists"] as List).cast<Map>()),
+      playlists:
+          MusicPlaylist.decodeList((json["playlists"] as List).cast<Map>()),
       albums: MusicAlbum.decodeList((json["albums"] as List).cast<Map>()),
       artists: MusicArtist.decodeList((json["artists"] as List).cast<Map>()),
     );
   }
 
   factory SearchResults.decodeFilter(Map json, {required String filter}) {
-    final tracks = MusicTrack.decodeList(((json["tracks"] ?? []) as List).cast<Map>());
-    final playlists = MusicPlaylist.decodeList(((json["playlists"] ?? []) as List).cast<Map>());
-    final albums = MusicAlbum.decodeList(((json["albums"] ?? []) as List).cast<Map>());
-    final artists = MusicArtist.decodeList(((json["artists"] ?? []) as List).cast<Map>());
+    final tracks =
+        MusicTrack.decodeList(((json["tracks"] ?? []) as List).cast<Map>());
+    final playlists = MusicPlaylist.decodeList(
+        ((json["playlists"] ?? []) as List).cast<Map>());
+    final albums =
+        MusicAlbum.decodeList(((json["albums"] ?? []) as List).cast<Map>());
+    final artists =
+        MusicArtist.decodeList(((json["artists"] ?? []) as List).cast<Map>());
 
     return SearchResults(
       tracks: tracks.where((e) => e.match(filter)).toList(),
@@ -35,7 +44,8 @@ class SearchResults {
     );
   }
 
-  bool get isEmpty => tracks.isEmpty && playlists.isEmpty && albums.isEmpty && artists.isEmpty;
+  bool get isEmpty =>
+      tracks.isEmpty && playlists.isEmpty && albums.isEmpty && artists.isEmpty;
   bool get isNotEmpty => !isEmpty;
 }
 
@@ -67,7 +77,10 @@ class SearchSuggestion {
     );
   }
 
-  static List<SearchSuggestion> decodeList(List<List> encoded) => encoded.map((e) => SearchSuggestion.decode(e)).toList().cast<SearchSuggestion>();
+  static List<SearchSuggestion> decodeList(List<List> encoded) => encoded
+      .map((e) => SearchSuggestion.decode(e))
+      .toList()
+      .cast<SearchSuggestion>();
 
   String get raw => _parts.map((e) => e.text).join();
 
@@ -77,7 +90,9 @@ class SearchSuggestion {
               text: e.text,
               style: TextStyle(
                 fontWeight: e.bold ? FontWeight.bold : FontWeight.w500,
-                color: e.bold ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+                color: e.bold
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.secondary,
               ),
             ))
         .toList();

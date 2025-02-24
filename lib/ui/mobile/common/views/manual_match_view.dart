@@ -14,7 +14,8 @@ class ManualMatchView extends StatefulWidget {
   final MusicTrack track;
 
   static view(MusicTrack track, {required BuildContext context}) =>
-      Navigator.of(context, rootNavigator: true).push(CupertinoDialogRoute(context: context, builder: (context) => ManualMatchView(track)));
+      Navigator.of(context, rootNavigator: true).push(CupertinoDialogRoute(
+          context: context, builder: (context) => ManualMatchView(track)));
 
   @override
   State<ManualMatchView> createState() => _ManualMatchViewState();

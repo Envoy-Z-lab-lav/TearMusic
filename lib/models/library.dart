@@ -21,7 +21,9 @@ class UserLibrary {
       liked_artists: (json["liked_artists"] as List).cast<String>(),
       liked_albums: (json["liked_albums"] as List).cast<String>(),
       liked_playlists: (json["liked_playlists"] as List).cast<String>(),
-      track_history: (json["track_history"] as List).map((e) => UserTrackHistory.decode(e)).toList(),
+      track_history: (json["track_history"] as List)
+          .map((e) => UserTrackHistory.decode(e))
+          .toList(),
     );
   }
 
@@ -37,7 +39,13 @@ class UserLibrary {
   }
 }
 
-enum LibraryType { liked_tracks, liked_artists, liked_albums, liked_playlists, track_history }
+enum LibraryType {
+  liked_tracks,
+  liked_artists,
+  liked_albums,
+  liked_playlists,
+  track_history
+}
 
 class UserTrackHistory {
   int date;

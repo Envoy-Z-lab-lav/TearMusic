@@ -23,11 +23,21 @@ class BatchLibrary {
 
   factory BatchLibrary.decode(Map json) {
     return BatchLibrary(
-        tracks: ((json["tracks"] ?? []) as List).map((e) => MusicTrack.decode(e)).toList(),
-        artists: ((json["artists"] ?? []) as List).map((e) => MusicArtist.decode(e)).toList(),
-        albums: ((json["albums"] ?? []) as List).map((e) => MusicAlbum.decode(e)).toList(),
-        playlists: ((json["playlists"] ?? []) as List).map((e) => MusicPlaylist.decode(e)).toList(),
-        track_history: ((json["track_history"] ?? []) as List).map((e) => BatchTrackHistory.decode(e)).toList());
+        tracks: ((json["tracks"] ?? []) as List)
+            .map((e) => MusicTrack.decode(e))
+            .toList(),
+        artists: ((json["artists"] ?? []) as List)
+            .map((e) => MusicArtist.decode(e))
+            .toList(),
+        albums: ((json["albums"] ?? []) as List)
+            .map((e) => MusicAlbum.decode(e))
+            .toList(),
+        playlists: ((json["playlists"] ?? []) as List)
+            .map((e) => MusicPlaylist.decode(e))
+            .toList(),
+        track_history: ((json["track_history"] ?? []) as List)
+            .map((e) => BatchTrackHistory.decode(e))
+            .toList());
   }
 
   Map encode() => {

@@ -26,7 +26,8 @@ class SettingsContainer extends StatelessWidget {
                   Expanded(
                     child: Text(
                       name,
-                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 16.0),
                     ),
                   ),
                   TextButton(

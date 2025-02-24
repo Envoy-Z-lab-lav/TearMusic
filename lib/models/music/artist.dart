@@ -25,7 +25,9 @@ class MusicArtist extends Model {
       id: json["id"],
       name: json["name"],
       genres: ((json["genres"] as List?) ?? []).cast<String>(),
-      images: images != null && images.isNotEmpty ? Images.decode(images.cast<Map>()) : null,
+      images: images != null && images.isNotEmpty
+          ? Images.decode(images.cast<Map>())
+          : null,
       followers: json["followers"] ?? 0,
     );
   }
@@ -33,11 +35,13 @@ class MusicArtist extends Model {
   Map encode() => json ?? {};
 
   static List<MusicArtist> decodeList(List<Map> encoded) => encoded
-      .where((e) => e["id"] != null && e["images"] != null && e["images"].isNotEmpty)
+      .where((e) =>
+          e["id"] != null && e["images"] != null && e["images"].isNotEmpty)
       .map((e) => MusicArtist.decode(e))
       .toList()
       .cast<MusicArtist>();
-  static List<Map> encodeList(List<MusicArtist> models) => models.map((e) => e.encode()).toList().cast<Map>();
+  static List<Map> encodeList(List<MusicArtist> models) =>
+      models.map((e) => e.encode()).toList().cast<Map>();
 }
 
 class ArtistDetails {

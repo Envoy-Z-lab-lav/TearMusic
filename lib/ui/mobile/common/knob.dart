@@ -18,8 +18,8 @@ class Knob extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.black.withOpacity(.1),
-              Colors.black.withOpacity(0),
+              Colors.black.withValues(alpha: .1),
+              Colors.black.withValues(alpha: 0),
             ],
           ),
         ),
@@ -36,7 +36,10 @@ class Knob extends StatelessWidget {
                   sigmaY: 24.0,
                 ),
                 child: Container(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(.25),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: .25),
                 ),
               ),
             ),

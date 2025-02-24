@@ -11,10 +11,11 @@ class PlaylistLoadingTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 24.0, bottom: 8.0, top: 2.0),
+      padding:
+          const EdgeInsets.only(left: 16.0, right: 24.0, bottom: 8.0, top: 2.0),
       child: Shimmer.fromColors(
-        baseColor: Colors.white.withOpacity(.05),
-        highlightColor: Colors.white.withOpacity(.25),
+        baseColor: Colors.white.withValues(alpha: .05),
+        highlightColor: Colors.white.withValues(alpha: .25),
         child: ListView.builder(
           padding: EdgeInsets.zero,
           shrinkWrap: true,

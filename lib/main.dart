@@ -28,8 +28,10 @@ void main() async {
   final baseApi = BaseApi();
   final musicInfoProvider = MusicInfoProvider(base: baseApi);
 
-  final userProvider = UserProvider(base: baseApi, musicInfo: musicInfoProvider);
-  final currentMusicProvider = CurrentMusicProvider(musicApi: musicInfoProvider);
+  final userProvider =
+      UserProvider(base: baseApi, musicInfo: musicInfoProvider);
+  final currentMusicProvider =
+      CurrentMusicProvider(musicApi: musicInfoProvider);
   userProvider.setCurrentMusicProvider(currentMusicProvider);
 
   final themeProvider = ThemeProvider();
@@ -65,7 +67,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => themeProvider),
     ChangeNotifierProvider(create: (_) => currentMusicProvider),
     Provider(create: (_) => WillPopProvider()),
-    ChangeNotifierProvider(create: (_) => NavigatorProvider(theme: themeProvider)),
+    ChangeNotifierProvider(
+        create: (_) => NavigatorProvider(theme: themeProvider)),
   ];
 
   // Run app

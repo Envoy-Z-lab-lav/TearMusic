@@ -45,7 +45,9 @@ class NavigatorProvider extends ChangeNotifier {
 
   Future<T?> push<T>(Route<T> route, {String? uri}) {
     if (uri != null) {
-      if (_uriHistory.isNotEmpty && _uriHistory.last == uri) return Future.value(null);
+      if (_uriHistory.isNotEmpty && _uriHistory.last == uri) {
+        return Future.value(null);
+      }
       _uriHistory.add(uri);
     }
     return _state.push(route);
@@ -53,7 +55,8 @@ class NavigatorProvider extends ChangeNotifier {
 
   static const Radius _kDefaultTopRadius = Radius.circular(12);
 
-  Future<T?> pushModal<T>({required Widget Function(BuildContext) builder, String? uri}) {
+  Future<T?> pushModal<T>(
+      {required Widget Function(BuildContext) builder, String? uri}) {
     return push<T>(
       CupertinoModalBottomSheetRoute<T>(
         builder: builder,
@@ -88,7 +91,7 @@ class NavigatorProvider extends ChangeNotifier {
         style: theme.textTheme.bodyMedium!,
         child: snackBar.content,
       ),
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
     ));
   }
 }

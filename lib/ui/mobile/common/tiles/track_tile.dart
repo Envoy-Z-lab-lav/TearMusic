@@ -23,7 +23,12 @@ import 'package:tearmusic/ui/mobile/common/views/artist_view/artist_view.dart';
 import 'package:tearmusic/ui/mobile/common/views/manual_match_view.dart';
 
 class TrackTile extends StatelessWidget {
-  const TrackTile(this.track, {Key? key, this.leadingTrackNumber = false, this.trailingDuration = false, this.onPressed, this.onLongPressed})
+  const TrackTile(this.track,
+      {Key? key,
+      this.leadingTrackNumber = false,
+      this.trailingDuration = false,
+      this.onPressed,
+      this.onLongPressed})
       : super(key: key);
 
   final MusicTrack track;
@@ -38,20 +43,26 @@ class TrackTile extends StatelessWidget {
       key: ValueKey(track.id),
       confirmDismiss: (direction) async {
         log("Item dismissed");
-        context.read<UserProvider>().postAdd(track.id, DateTime.now().millisecondsSinceEpoch, whereTo: PlayerInfoPostType.primary);
+        context.read<UserProvider>().postAdd(
+            track.id, DateTime.now().millisecondsSinceEpoch,
+            whereTo: PlayerInfoPostType.primary);
 
         return false;
       },
       direction: DismissDirection.startToEnd,
       background: Container(
-        color: Colors.green.withOpacity(.3),
+        color: Colors.green.withValues(alpha: .3),
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: Align(alignment: Alignment.centerLeft, child: Icon(Icons.queue_music)),
+          child: Align(
+              alignment: Alignment.centerLeft, child: Icon(Icons.queue_music)),
         ),
       ),
       movementDuration: const Duration(milliseconds: 50),
-      dismissThresholds: const {DismissDirection.startToEnd: 0.45, DismissDirection.endToStart: 0.45},
+      dismissThresholds: const {
+        DismissDirection.startToEnd: 0.45,
+        DismissDirection.endToStart: 0.45
+      },
       resizeDuration: const Duration(milliseconds: 50),
       child: Selector<CurrentMusicProvider, MusicTrack?>(
         selector: (_, p) => p.playing,
@@ -65,7 +76,8 @@ class TrackTile extends StatelessWidget {
               child: Center(
                 child: PageTransitionSwitcher(
                   duration: const Duration(seconds: 1),
-                  transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                  transitionBuilder:
+                      (child, primaryAnimation, secondaryAnimation) {
                     return FadeThroughTransition(
                       fillColor: Colors.transparent,
                       animation: primaryAnimation,
@@ -103,25 +115,31 @@ class TrackTile extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).colorScheme.secondary.withOpacity(.2),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withValues(alpha: .2),
                           blurRadius: 6.0,
                         ),
                       ]),
                     ),
                   ),
-                  if (track.album != null && track.album!.images != null) CachedImage(track.album!.images!, size: const Size(64, 64)),
+                  if (track.album != null && track.album!.images != null)
+                    CachedImage(track.album!.images!, size: const Size(64, 64)),
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 500),
                     opacity: track == value ? 1 : 0,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(.5),
+                        color: Colors.black.withValues(alpha: .5),
                         borderRadius: BorderRadius.circular(4.0),
                       ),
                       child: Center(
                         child: Icon(
                           CupertinoIcons.play_fill,
-                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                         ),
                       ),
                     ),
@@ -150,13 +168,16 @@ class TrackTile extends StatelessWidget {
                       width: 14,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(2.0),
-                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
                       child: Center(
                         child: Text(
                           "E",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
                             fontSize: 12.0,
                             height: -0.05,
                             fontWeight: FontWeight.bold,
@@ -174,7 +195,8 @@ class TrackTile extends StatelessWidget {
                   ),
                 ],
               ),
-              trailing: trailingDuration ? Text(track.duration.shortFormat()) : null,
+              trailing:
+                  trailingDuration ? Text(track.duration.shortFormat()) : null,
               visualDensity: VisualDensity.compact,
               onTap: onPressed ??
                   () {
@@ -182,16 +204,21 @@ class TrackTile extends StatelessWidget {
                     final currentMusic = context.read<CurrentMusicProvider>();
                     currentMusic.playTrack(track);
                     if (track.album?.images != null) {
-                      CachedImage(track.album!.images!).getImage(const Size(64, 64)).then((value) {
+                      CachedImage(track.album!.images!)
+                          .getImage(const Size(64, 64))
+                          .then((value) {
                         if (value != null) {
                           final colors = generateColorPalette(value);
                           final theme = context.read<ThemeProvider>();
-                          if (theme.key != colors[1]) theme.setThemeKey(colors[1]);
+                          if (theme.key != colors[1]) {
+                            theme.setThemeKey(colors[1]);
+                          }
                         }
                         if (currentMusic.playing != null) {
-                          context
-                              .read<UserProvider>()
-                              .postAdd(currentMusic.playing!.id, DateTime.now().millisecondsSinceEpoch, whereTo: PlayerInfoPostType.history);
+                          context.read<UserProvider>().postAdd(
+                              currentMusic.playing!.id,
+                              DateTime.now().millisecondsSinceEpoch,
+                              whereTo: PlayerInfoPostType.history);
                         }
                       });
                     }
@@ -215,34 +242,48 @@ class TrackTile extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
                                   child: TrackTilePreview(track),
                                 ),
                                 MenuButton(
                                   icon: const Icon(CupertinoIcons.person),
                                   child: const Text("View Artist"),
                                   onPressed: () {
-                                    ArtistView.view(track.artists.first, context: context);
-                                    Navigator.of(context, rootNavigator: true).pop();
+                                    ArtistView.view(track.artists.first,
+                                        context: context);
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
                                   },
                                 ),
                                 if (track.album != null)
                                   MenuButton(
-                                    icon: const Icon(CupertinoIcons.music_albums),
+                                    icon:
+                                        const Icon(CupertinoIcons.music_albums),
                                     child: const Text("View Album"),
                                     onPressed: () {
-                                      AlbumView.view(track.album!, context: context);
-                                      Navigator.of(context, rootNavigator: true).pop();
+                                      AlbumView.view(track.album!,
+                                          context: context);
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
                                     },
                                   ),
                                 MenuButton(
                                   icon: const Icon(CupertinoIcons.trash),
                                   child: const Text("Purge Cache"),
                                   onPressed: () {
-                                    Navigator.of(context, rootNavigator: true).pop();
-                                    context.read<MusicInfoProvider>().purgeCache(track);
-                                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                                      context.read<NavigatorProvider>().showSnackBar(const SnackBar(content: Text("Track cache deleted")));
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                    context
+                                        .read<MusicInfoProvider>()
+                                        .purgeCache(track);
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      context
+                                          .read<NavigatorProvider>()
+                                          .showSnackBar(const SnackBar(
+                                              content:
+                                                  Text("Track cache deleted")));
                                     });
                                   },
                                 ),
@@ -250,7 +291,8 @@ class TrackTile extends StatelessWidget {
                                   icon: const Icon(CupertinoIcons.search),
                                   child: const Text("Manual Match"),
                                   onPressed: () {
-                                    ManualMatchView.view(track, context: context);
+                                    ManualMatchView.view(track,
+                                        context: context);
                                   },
                                 ),
                               ],

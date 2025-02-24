@@ -52,7 +52,8 @@ List<Color> generatePalette(Map<String, dynamic> params) {
     int chunkSize = colors.length ~/ noOfItems;
 
     for (int i = 0; i < noOfItems; i++) {
-      palette.add(getAverageColor(colors.sublist(i * chunkSize, (i + 1) * chunkSize)));
+      palette.add(
+          getAverageColor(colors.sublist(i * chunkSize, (i + 1) * chunkSize)));
     }
   }
 
@@ -76,7 +77,8 @@ List<Color> extractPixelsColors(Uint8List bytes) {
   for (int j = 1; j < noOfPixelsPerAxis + 1; j++) {
     for (int i = 1; i < noOfPixelsPerAxis + 1; i++) {
       final pixel = image.getPixel(xChunk * i, yChunk * j);
-      final color = Color.fromARGB(255, pixel.r.toInt(), pixel.g.toInt(), pixel.b.toInt());
+      final color = Color.fromARGB(
+          255, pixel.r.toInt(), pixel.g.toInt(), pixel.b.toInt());
       colors.add(color);
     }
   }

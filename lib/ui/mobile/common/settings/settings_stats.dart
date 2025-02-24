@@ -21,11 +21,13 @@ class SettingsStatsItem extends StatelessWidget {
             children: [
               Text(
                 value,
-                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600, fontSize: 18.0),
               ),
               Text(
                 name,
-                style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 11.0),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w300, fontSize: 11.0),
               ),
             ],
           ),

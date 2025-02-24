@@ -60,11 +60,13 @@ class TimedSegment {
   factory TimedSegment.decode(Map json) {
     return TimedSegment(
       text: json['c'] ?? "",
-      offset: Duration(milliseconds: ((json['o'] ?? 0).toDouble() * 1000).round()),
+      offset:
+          Duration(milliseconds: ((json['o'] ?? 0).toDouble() * 1000).round()),
     );
   }
 
-  static List<TimedSegment> decodeList(List<Map> encoded) => encoded.map((e) => TimedSegment.decode(e)).toList().cast();
+  static List<TimedSegment> decodeList(List<Map> encoded) =>
+      encoded.map((e) => TimedSegment.decode(e)).toList().cast();
 }
 
 class LyricsLine {
@@ -76,11 +78,14 @@ class LyricsLine {
 
   factory LyricsLine.decode(Map json) {
     return LyricsLine(
-      start: Duration(milliseconds: ((json['ts'] ?? 0).toDouble() * 1000).round()),
-      end: Duration(milliseconds: ((json['te'] ?? 0).toDouble() * 1000).round()),
+      start:
+          Duration(milliseconds: ((json['ts'] ?? 0).toDouble() * 1000).round()),
+      end:
+          Duration(milliseconds: ((json['te'] ?? 0).toDouble() * 1000).round()),
       segments: TimedSegment.decodeList((json['l'] as List).cast()),
     );
   }
 
-  static List<LyricsLine> decodeList(List<Map> encoded) => encoded.map((e) => LyricsLine.decode(e)).toList().cast();
+  static List<LyricsLine> decodeList(List<Map> encoded) =>
+      encoded.map((e) => LyricsLine.decode(e)).toList().cast();
 }

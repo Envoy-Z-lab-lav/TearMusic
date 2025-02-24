@@ -3,7 +3,9 @@ import 'package:tearmusic/models/manual_match.dart';
 import 'package:tearmusic/ui/common/format.dart';
 
 class ManualMatchTile extends StatelessWidget {
-  const ManualMatchTile(this.match, {Key? key, this.onTap, this.selected = false}) : super(key: key);
+  const ManualMatchTile(this.match,
+      {Key? key, this.onTap, this.selected = false})
+      : super(key: key);
 
   final ManualMatch match;
   final void Function()? onTap;
@@ -31,7 +33,7 @@ class ManualMatchTile extends StatelessWidget {
             Container(
               height: 42.0,
               width: 42.0,
-              color: Colors.black.withOpacity(.5),
+              color: Colors.black.withValues(alpha: .5),
               child: const Center(
                 child: Icon(Icons.check),
               ),

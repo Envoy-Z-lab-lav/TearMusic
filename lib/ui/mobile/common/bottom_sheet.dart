@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
+const BoxShadow _kDefaultBoxShadow =
+    BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
 const double _kPreviousPageVisibleOffset = 10;
 
 class BottomSheetContainer extends StatelessWidget {
@@ -24,13 +25,15 @@ class BottomSheetContainer extends StatelessWidget {
     final topPadding = _kPreviousPageVisibleOffset + topSafeAreaPadding;
 
     final shadowOrDefault = shadow ?? _kDefaultBoxShadow;
-    final backgroundOrDefault = backgroundColor ?? CupertinoTheme.of(context).scaffoldBackgroundColor;
+    final backgroundOrDefault =
+        backgroundColor ?? CupertinoTheme.of(context).scaffoldBackgroundColor;
     return Padding(
       padding: EdgeInsets.only(top: topPadding),
       child: ClipRRect(
         borderRadius: BorderRadius.vertical(top: topRadius),
         child: Container(
-          decoration: BoxDecoration(color: backgroundOrDefault, boxShadow: [shadowOrDefault]),
+          decoration: BoxDecoration(
+              color: backgroundOrDefault, boxShadow: [shadowOrDefault]),
           width: double.infinity,
           child: MediaQuery.removePadding(
             context: context,

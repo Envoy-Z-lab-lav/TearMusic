@@ -32,7 +32,7 @@ class VirtualPlayer {
   Future<void> playTrack(MusicTrack track) async {
     _player.stop();
     String? streamUrl = track.streamUrl;
-    if (streamUrl != null) log("[PLAYER] Using cached cdn stream");
+    log("[PLAYER] Using cached cdn stream");
     final playback = await _musicApi.playback(track);
     streamUrl ??= playback.streamUrl;
     track.waveform = playback.waveform;

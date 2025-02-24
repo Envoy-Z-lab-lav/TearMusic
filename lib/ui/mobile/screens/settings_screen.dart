@@ -19,23 +19,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final avatar = context.select<UserProvider, String>((user) => user.avatar);
-    final username = context.select<UserProvider, String>((user) => user.username);
+    final username =
+        context.select<UserProvider, String>((user) => user.username);
 
     return Scaffold(
       body: CupertinoScrollbar(
         child: CustomScrollView(
           slivers: [
-            SliverAppBar.large(
+            const SliverAppBar.large(
               pinned: true,
               snap: false,
               floating: false,
-              title: const Text("Settings"),
+              title: Text("Settings"),
             ),
             SliverToBoxAdapter(
               child: SafeArea(
                 top: false,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 200.0).add(const EdgeInsets.symmetric(horizontal: 12.0)),
+                  padding: const EdgeInsets.only(bottom: 200.0)
+                      .add(const EdgeInsets.symmetric(horizontal: 12.0)),
                   child: Column(
                     children: [
                       Padding(
@@ -45,29 +47,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 16.0, right: 8.0, top: 16.0, bottom: 8.0),
+                                padding: const EdgeInsets.only(
+                                    left: 16.0,
+                                    right: 8.0,
+                                    top: 16.0,
+                                    bottom: 8.0),
                                 child: Row(
                                   children: [
                                     ClipOval(
                                       child: SizedBox(
                                         width: 52.0,
                                         height: 52.0,
-                                        child: avatar != "" ? Image.network(avatar) : null,
+                                        child: avatar != ""
+                                            ? Image.network(avatar)
+                                            : null,
                                       ),
                                     ),
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 14.0),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               username,
-                                              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 22.0),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 22.0),
                                             ),
                                             const Text(
                                               "View your profile",
-                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: Colors.grey),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14.0,
+                                                  color: Colors.grey),
                                             ),
                                           ],
                                         ),
@@ -81,12 +96,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                               ),
                               const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 2.0),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 6.0, horizontal: 2.0),
                                 child: Row(
                                   children: [
-                                    SettingsStatsItem(name: "Minute spent", value: "214"),
-                                    SettingsStatsItem(name: "Likes received", value: "16"),
-                                    SettingsStatsItem(name: "Followers", value: "7"),
+                                    SettingsStatsItem(
+                                        name: "Minute spent", value: "214"),
+                                    SettingsStatsItem(
+                                        name: "Likes received", value: "16"),
+                                    SettingsStatsItem(
+                                        name: "Followers", value: "7"),
                                   ],
                                 ),
                               )
@@ -140,7 +159,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           SettingsSwitchTile(
                             name: "Recently played artists",
-                            desc: "Show my recently played artists on my profile",
+                            desc:
+                                "Show my recently played artists on my profile",
                             value: true,
                             onChanged: (v) {},
                           ),
@@ -158,14 +178,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
                         child: TextButton.icon(
                           icon: const Icon(Ionicons.log_out_outline),
-                          label: const Text("Logout", style: TextStyle(fontWeight: FontWeight.w600)),
+                          label: const Text("Logout",
+                              style: TextStyle(fontWeight: FontWeight.w600)),
                           style: ButtonStyle(
-                            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0)),
-                            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 242, 88, 88).withOpacity(.25)),
-                            foregroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 242, 88, 88)),
+                            padding: WidgetStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 10.0)),
+                            backgroundColor: WidgetStateProperty.all(
+                                const Color.fromARGB(255, 242, 88, 88)
+                                    .withValues(alpha: .25)),
+                            foregroundColor: WidgetStateProperty.all(
+                                const Color.fromARGB(255, 242, 88, 88)),
                           ),
                           onPressed: () {
                             SettingsAlertDialog().showCustomDialog(context);

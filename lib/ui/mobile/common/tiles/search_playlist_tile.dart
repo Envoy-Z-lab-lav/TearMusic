@@ -27,7 +27,8 @@ class SearchPlaylistTile extends StatelessWidget {
       subtitle: Text("${playlist.owner} • ${playlist.trackCount} songs"),
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
-        PlaylistView.view(playlist, context: context).then((_) => context.read<ThemeProvider>().resetTheme());
+        PlaylistView.view(playlist, context: context)
+            .then((_) => context.read<ThemeProvider>().resetTheme());
       },
     );
   }

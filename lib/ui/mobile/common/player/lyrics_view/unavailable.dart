@@ -31,8 +31,10 @@ class LyricsUnavailalbe extends StatelessWidget {
               iconSize: 32.0,
               padding: const EdgeInsets.all(12.0),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
-                foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondaryContainer),
+                backgroundColor: WidgetStateProperty.all(
+                    Theme.of(context).colorScheme.secondaryContainer),
+                foregroundColor: WidgetStateProperty.all(
+                    Theme.of(context).colorScheme.onSecondaryContainer),
               ),
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop();

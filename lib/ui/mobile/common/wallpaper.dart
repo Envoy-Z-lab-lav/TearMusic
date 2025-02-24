@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 // Disabled due to performance issues
 class Wallpaper extends StatefulWidget {
-  const Wallpaper({Key? key, this.child, this.particleOpacity = .1, this.gradient = true}) : super(key: key);
+  const Wallpaper(
+      {Key? key, this.child, this.particleOpacity = .1, this.gradient = true})
+      : super(key: key);
 
   final Widget? child;
   final double particleOpacity;
@@ -78,8 +80,8 @@ class _WallpaperState extends State<Wallpaper> with TickerProviderStateMixin {
     //                     center: const Alignment(0.95, -0.95),
     //                     radius: 1.0,
     //                     colors: [
-    //                       Theme.of(context).colorScheme.onSecondary.withOpacity(.3),
-    //                       Theme.of(context).colorScheme.onSecondary.withOpacity(.2),
+    //                       Theme.of(context).colorScheme.onSecondary.withValues(alpha: .3),
+    //                       Theme.of(context).colorScheme.onSecondary.withValues(alpha: .2),
     //                     ],
     //                   ),
     //                 ),

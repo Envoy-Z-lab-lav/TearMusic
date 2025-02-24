@@ -17,7 +17,11 @@ class MusicAlbum extends Model {
     required this.releaseDate,
     required this.artists,
     required this.images,
-  }) : super(id: id, json: json, key: "$name ${artists.firstOrNull?.name}", type: "album");
+  }) : super(
+            id: id,
+            json: json,
+            key: "$name ${artists.firstOrNull?.name}",
+            type: "album");
 
   factory MusicAlbum.decode(Map json) {
     final images = json["images"] as List?;
@@ -26,17 +30,27 @@ class MusicAlbum extends Model {
       id: json["id"],
       name: json["name"] ?? "Album",
       trackCount: json["track_count"] ?? 0,
-      releaseDate: DateTime.tryParse(json["release_date"] ?? "") ?? DateTime.fromMillisecondsSinceEpoch(0),
-      artists: (json["artists"] as List).map((e) => MusicArtist.decode(e)).toList().cast<MusicArtist>(),
-      images: images != null && images.isNotEmpty ? Images.decode(images.cast<Map>()) : null,
+      releaseDate: DateTime.tryParse(json["release_date"] ?? "") ??
+          DateTime.fromMillisecondsSinceEpoch(0),
+      artists: (json["artists"] as List)
+          .map((e) => MusicArtist.decode(e))
+          .toList()
+          .cast<MusicArtist>(),
+      images: images != null && images.isNotEmpty
+          ? Images.decode(images.cast<Map>())
+          : null,
     );
   }
 
   Map encode() => json ?? {};
 
-  static List<MusicAlbum> decodeList(List<Map> encoded) =>
-      encoded.where((e) => e["id"] != null).map((e) => MusicAlbum.decode(e)).toList().cast<MusicAlbum>();
-  static List<Map> encodeList(List<MusicAlbum> models) => models.map((e) => e.encode()).toList().cast<Map>();
+  static List<MusicAlbum> decodeList(List<Map> encoded) => encoded
+      .where((e) => e["id"] != null)
+      .map((e) => MusicAlbum.decode(e))
+      .toList()
+      .cast<MusicAlbum>();
+  static List<Map> encodeList(List<MusicAlbum> models) =>
+      models.map((e) => e.encode()).toList().cast<Map>();
 
   String get artistsLabel {
     if (artists.length == 2) {

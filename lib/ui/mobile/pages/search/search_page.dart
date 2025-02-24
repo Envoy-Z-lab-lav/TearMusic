@@ -17,7 +17,6 @@ import 'package:tearmusic/providers/navigator_provider.dart';
 import 'package:tearmusic/ui/mobile/common/filter_bar.dart';
 import 'package:tearmusic/ui/mobile/common/tiles/search_album_tile.dart';
 import 'package:tearmusic/ui/mobile/common/tiles/search_artist_tile.dart';
-import 'package:tearmusic/ui/mobile/common/tiles/search_playlist_tile.dart';
 import 'package:tearmusic/ui/mobile/common/tiles/search_track_tile.dart';
 import 'package:tearmusic/ui/mobile/common/wallpaper.dart';
 import 'package:tearmusic/ui/mobile/navigator.dart';
@@ -34,7 +33,8 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateMixin {
+class _SearchPageState extends State<SearchPage>
+    with SingleTickerProviderStateMixin {
   final _searchInputController = TextEditingController();
   final _searchInputFocus = FocusNode();
   late TabController _tabController;
@@ -143,7 +143,9 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
       staticSuggestions(input);
       if (searchDebounce.isActive) searchDebounce.cancel();
       searchDebounce = Timer(searchTimeout, () {
-        if (result == SearchResult.prepare) onSubmitHandler(suggestionResults[0].item, finalize: false);
+        if (result == SearchResult.prepare) {
+          onSubmitHandler(suggestionResults[0].item, finalize: false);
+        }
       });
     });
   }
@@ -251,7 +253,8 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0, left: 12.0),
-                        child: Icon(Icons.search, color: Theme.of(context).colorScheme.secondary),
+                        child: Icon(Icons.search,
+                            color: Theme.of(context).colorScheme.secondary),
                       ),
                       Expanded(
                         child: TextField(
@@ -265,7 +268,8 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                           style: const TextStyle(fontWeight: FontWeight.w500),
                           decoration: const InputDecoration(
                             hintText: "Search...",
-                            hintStyle: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                            hintStyle: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.w500),
                             border: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                             ),
@@ -293,8 +297,10 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                     int selectedPage = _pageController.page!.round();
 
                     if (index == selectedPage) return;
-                    if (_pageController.page?.roundToDouble() != _pageController.page) {
-                      _pageController.animateToPage(index, curve: Curves.easeIn, duration: kTabScrollDuration);
+                    if (_pageController.page?.roundToDouble() !=
+                        _pageController.page) {
+                      _pageController.animateToPage(index,
+                          curve: Curves.easeIn, duration: kTabScrollDuration);
                       return;
                     }
 
@@ -311,7 +317,8 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
               Expanded(
                 child: PageTransitionSwitcher(
                   duration: const Duration(milliseconds: 500),
-                  transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                  transitionBuilder:
+                      (child, primaryAnimation, secondaryAnimation) {
                     return SharedAxisTransition(
                       fillColor: Colors.transparent,
                       animation: primaryAnimation,
@@ -325,7 +332,8 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                       case SearchResult.prepare:
                         if (suggestionResults.isNotEmpty) {
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Row(
                               children: [
                                 Expanded(
@@ -336,37 +344,57 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                         itemCount: suggestionResults.length,
                                         padding: EdgeInsets.zero,
                                         itemBuilder: (context, index) {
-                                          List<InlineSpan> renderSuggestion(Result<String> result) {
-                                            if (result.matches.isEmpty) return [];
+                                          List<InlineSpan> renderSuggestion(
+                                              Result<String> result) {
+                                            if (result.matches.isEmpty) {
+                                              return [];
+                                            }
 
                                             List<InlineSpan> parts = [];
                                             final match = result.matches.first;
-                                            final matches = result.matches.first.matchedIndices;
+                                            final matches = result
+                                                .matches.first.matchedIndices;
 
                                             final secStyle = TextStyle(
                                               fontWeight: FontWeight.w500,
-                                              color: Theme.of(context).colorScheme.secondary,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
                                             );
 
                                             final primStyle = TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Theme.of(context).colorScheme.primary,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
                                             );
 
-                                            for (int i = 0; i < matches.length; i++) {
+                                            for (int i = 0;
+                                                i < matches.length;
+                                                i++) {
                                               if (i == 0) {
                                                 parts.add(TextSpan(
-                                                  text: match.value.substring(i == 0 ? 0 : matches[i - 1].end + 1, matches[i].start),
+                                                  text: match.value.substring(
+                                                      i == 0
+                                                          ? 0
+                                                          : matches[i - 1].end +
+                                                              1,
+                                                      matches[i].start),
                                                   style: secStyle,
                                                 ));
                                               }
                                               parts.add(TextSpan(
-                                                text: match.value.substring(matches[i].start, matches[i].end + 1),
+                                                text: match.value.substring(
+                                                    matches[i].start,
+                                                    matches[i].end + 1),
                                                 style: primStyle,
                                               ));
                                               parts.add(TextSpan(
-                                                text: match.value
-                                                    .substring(matches[i].end + 1, (i == matches.length - 1) ? null : matches[i + 1].start),
+                                                text: match.value.substring(
+                                                    matches[i].end + 1,
+                                                    (i == matches.length - 1)
+                                                        ? null
+                                                        : matches[i + 1].start),
                                                 style: secStyle,
                                               ));
                                             }
@@ -375,37 +403,65 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                           }
 
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4.0),
                                             child: InkWell(
-                                              onTap: () => onSuggestionHandler(suggestionResults[index].item),
-                                              borderRadius: BorderRadius.circular(8.0),
+                                              onTap: () => onSuggestionHandler(
+                                                  suggestionResults[index]
+                                                      .item),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                               child: Container(
-                                                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 12.0,
+                                                        horizontal: 8.0),
                                                 width: double.infinity,
                                                 child: Row(
                                                   children: [
                                                     Padding(
-                                                      padding: const EdgeInsets.only(right: 12.0),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 12.0),
                                                       child: Icon(
                                                         CupertinoIcons.search,
-                                                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSecondaryContainer,
                                                       ),
                                                     ),
                                                     Expanded(
                                                       child: Text.rich(
-                                                        TextSpan(children: renderSuggestion(suggestionResults[index])),
-                                                        overflow: TextOverflow.ellipsis,
+                                                        TextSpan(
+                                                            children:
+                                                                renderSuggestion(
+                                                                    suggestionResults[
+                                                                        index])),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         style: TextStyle(
                                                           fontSize: 16.0,
-                                                          fontFamily: Theme.of(context).textTheme.bodyMedium!.fontFamily,
+                                                          fontFamily:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium!
+                                                                  .fontFamily,
                                                         ),
                                                       ),
                                                     ),
                                                     AnimatedOpacity(
-                                                      duration: const Duration(milliseconds: 300),
-                                                      opacity:
-                                                          index == 0 && results != null && lastSearchTerm == suggestionResults[index].item ? 1 : 0,
-                                                      child: const Icon(Icons.arrow_forward),
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                      opacity: index == 0 &&
+                                                              results != null &&
+                                                              lastSearchTerm ==
+                                                                  suggestionResults[
+                                                                          index]
+                                                                      .item
+                                                          ? 1
+                                                          : 0,
+                                                      child: const Icon(
+                                                          Icons.arrow_forward),
                                                     ),
                                                   ],
                                                 ),
@@ -414,10 +470,14 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                           );
                                         },
                                       ),
-                                      if (suggestions.isEmpty && suggestionResults.length == 1 && results == null)
+                                      if (suggestions.isEmpty &&
+                                          suggestionResults.length == 1 &&
+                                          results == null)
                                         Shimmer.fromColors(
-                                          baseColor: Colors.white.withOpacity(.05),
-                                          highlightColor: Colors.white.withOpacity(.25),
+                                          baseColor: Colors.white
+                                              .withValues(alpha: .05),
+                                          highlightColor: Colors.white
+                                              .withValues(alpha: .25),
                                           child: Column(
                                             children: List.generate(
                                               srw.length,
@@ -426,9 +486,14 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                                 child: Container(
                                                   width: srw[i].toDouble(),
                                                   height: 32,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                  margin: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 12.0,
+                                                      vertical: 8.0),
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(12.0),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -450,7 +515,9 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                             child: Icon(
                               CupertinoIcons.music_note_2,
                               size: 82.0,
-                              color: Theme.of(context).colorScheme.secondaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer,
                             ),
                           ),
                         );
@@ -461,7 +528,10 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                           padding: const EdgeInsets.only(bottom: 100.0),
                           child: Center(
                             child: LoadingAnimationWidget.staggeredDotsWave(
-                              color: Theme.of(context).colorScheme.secondary.withOpacity(.2),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withValues(alpha: .2),
                               size: 64.0,
                             ),
                           ),
@@ -478,15 +548,24 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                         return NotificationListener<ScrollNotification>(
                           onNotification: (notification) {
                             // from flutter source
-                            if (notification is ScrollUpdateNotification && !_tabController.indexIsChanging) {
-                              if ((_pageController.page! - _tabController.index).abs() > 1.0) {
-                                _tabController.index = _pageController.page!.floor();
+                            if (notification is ScrollUpdateNotification &&
+                                !_tabController.indexIsChanging) {
+                              if ((_pageController.page! - _tabController.index)
+                                      .abs() >
+                                  1.0) {
+                                _tabController.index =
+                                    _pageController.page!.floor();
                               }
-                              _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
+                              _tabController.offset =
+                                  (_pageController.page! - _tabController.index)
+                                      .clamp(-1.0, 1.0);
                             } else if (notification is ScrollEndNotification) {
-                              _tabController.index = _pageController.page!.round();
+                              _tabController.index =
+                                  _pageController.page!.round();
                               if (!_tabController.indexIsChanging) {
-                                _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
+                                _tabController.offset = (_pageController.page! -
+                                        _tabController.index)
+                                    .clamp(-1.0, 1.0);
                               }
                             }
                             return false;
@@ -512,8 +591,14 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                               kind: "Songs",
                                               icon: CupertinoIcons.music_note_2,
                                               results: results!.tracks
-                                                  .sublist(0, math.min(results!.tracks.length, topShowCount))
-                                                  .map((e) => SearchTrackTile(e))
+                                                  .sublist(
+                                                      0,
+                                                      math.min(
+                                                          results!
+                                                              .tracks.length,
+                                                          topShowCount))
+                                                  .map(
+                                                      (e) => SearchTrackTile(e))
                                                   .toList(),
                                               index: 1,
                                               pageController: _pageController,
@@ -525,8 +610,14 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                               kind: "Albums",
                                               icon: CupertinoIcons.music_albums,
                                               results: results!.albums
-                                                  .sublist(0, math.min(results!.albums.length, topShowCount))
-                                                  .map((e) => SearchAlbumTile(e))
+                                                  .sublist(
+                                                      0,
+                                                      math.min(
+                                                          results!
+                                                              .albums.length,
+                                                          topShowCount))
+                                                  .map(
+                                                      (e) => SearchAlbumTile(e))
                                                   .toList(),
                                               index: 2,
                                               pageController: _pageController,
@@ -551,8 +642,14 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                               kind: "Artists",
                                               icon: CupertinoIcons.person,
                                               results: results!.artists
-                                                  .sublist(0, math.min(results!.artists.length, topShowCount))
-                                                  .map((e) => SearchArtistTile(e))
+                                                  .sublist(
+                                                      0,
+                                                      math.min(
+                                                          results!
+                                                              .artists.length,
+                                                          topShowCount))
+                                                  .map((e) =>
+                                                      SearchArtistTile(e))
                                                   .toList(),
                                               index: 3,
                                               pageController: _pageController,
@@ -569,34 +666,48 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                     case 1:
                                       return CupertinoScrollbar(
                                         child: ListView.builder(
-                                          itemCount: (results?.tracks.length ?? 0).clamp(1, 50) + 1,
+                                          itemCount:
+                                              (results?.tracks.length ?? 0)
+                                                      .clamp(1, 50) +
+                                                  1,
                                           itemBuilder: (context, index) {
-                                            if (index == results!.tracks.length) {
-                                              return const SizedBox(height: 100);
+                                            if (index ==
+                                                results!.tracks.length) {
+                                              return const SizedBox(
+                                                  height: 100);
                                             }
 
-                                            if (results?.tracks.isEmpty ?? true) {
+                                            if (results?.tracks.isEmpty ??
+                                                true) {
                                               return noResultsWidget;
                                             }
 
-                                            return SearchTrackTile(results!.tracks[index]);
+                                            return SearchTrackTile(
+                                                results!.tracks[index]);
                                           },
                                         ),
                                       );
                                     case 2:
                                       return CupertinoScrollbar(
                                         child: ListView.builder(
-                                          itemCount: (results?.albums.length ?? 0).clamp(1, 50) + 1,
+                                          itemCount:
+                                              (results?.albums.length ?? 0)
+                                                      .clamp(1, 50) +
+                                                  1,
                                           itemBuilder: (context, index) {
-                                            if (index == results!.albums.length) {
-                                              return const SizedBox(height: 100);
+                                            if (index ==
+                                                results!.albums.length) {
+                                              return const SizedBox(
+                                                  height: 100);
                                             }
 
-                                            if (results?.albums.isEmpty ?? true) {
+                                            if (results?.albums.isEmpty ??
+                                                true) {
                                               return noResultsWidget;
                                             }
 
-                                            return SearchAlbumTile(results!.albums[index]);
+                                            return SearchAlbumTile(
+                                                results!.albums[index]);
                                           },
                                         ),
                                       );
@@ -620,17 +731,24 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                     case 3:
                                       return CupertinoScrollbar(
                                         child: ListView.builder(
-                                          itemCount: (results?.artists.length ?? 0).clamp(1, 50) + 1,
+                                          itemCount:
+                                              (results?.artists.length ?? 0)
+                                                      .clamp(1, 50) +
+                                                  1,
                                           itemBuilder: (context, index) {
-                                            if (index == results!.artists.length) {
-                                              return const SizedBox(height: 100);
+                                            if (index ==
+                                                results!.artists.length) {
+                                              return const SizedBox(
+                                                  height: 100);
                                             }
 
-                                            if (results?.artists.isEmpty ?? true) {
+                                            if (results?.artists.isEmpty ??
+                                                true) {
                                               return noResultsWidget;
                                             }
 
-                                            return SearchArtistTile(results!.artists[index]);
+                                            return SearchArtistTile(
+                                                results!.artists[index]);
                                           },
                                         ),
                                       );
@@ -641,12 +759,14 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                               },
                               childCount: 5,
                               findChildIndexCallback: (Key key) {
-                                final ValueKey<String> valueKey = key as ValueKey<String>;
+                                final ValueKey<String> valueKey =
+                                    key as ValueKey<String>;
                                 final String data = valueKey.value;
                                 return listOrder.indexOf(data);
                               },
                             ),
-                            physics: const PageScrollPhysics().applyTo(const BouncingScrollPhysics()),
+                            physics: const PageScrollPhysics()
+                                .applyTo(const BouncingScrollPhysics()),
                           ),
                         );
                     }

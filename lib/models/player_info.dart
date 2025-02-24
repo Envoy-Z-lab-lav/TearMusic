@@ -27,11 +27,15 @@ class PlayerInfo {
     return PlayerInfo(
       normalQueue: (json["normal_queue"] as List).cast<String>(),
       primaryQueue: (json["primary_queue"] as List).cast<String>(),
-      queueHistory: (json["queue_history"] as List).map((e) => QueueItem.decode(e)).toList(),
+      queueHistory: (json["queue_history"] as List)
+          .map((e) => QueueItem.decode(e))
+          .toList(),
       version: json["version"] ?? 0,
       operations: ((json["operations"] ?? []) as List).cast<Map>().toList(),
       operationsVersion: json["operations_version"] ?? 0,
-      currentMusic: json["current_music"] != null ? QueueItem.decode(json["current_music"]) : null,
+      currentMusic: json["current_music"] != null
+          ? QueueItem.decode(json["current_music"])
+          : null,
       queueSource: QueueSource.decode(json["queue_source"]),
     );
   }
@@ -81,7 +85,8 @@ class QueueSource {
       seed: json["seed"],
       id: json["id"],
       index: json["index"],
-      type: PlayerInfoSourceType.values.firstWhere((element) => element.name == json["type"]),
+      type: PlayerInfoSourceType.values
+          .firstWhere((element) => element.name == json["type"]),
     );
   }
 

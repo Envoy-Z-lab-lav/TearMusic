@@ -30,10 +30,14 @@ class ViewMenuButton extends StatelessWidget {
             icon: Container(
               padding: const EdgeInsets.all(4.0),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary.withOpacity(.3),
+                color: Theme.of(context)
+                    .colorScheme
+                    .secondary
+                    .withValues(alpha: .3),
                 shape: BoxShape.circle,
               ),
-              child: Icon(CupertinoIcons.ellipsis, color: Theme.of(context).colorScheme.secondary),
+              child: Icon(CupertinoIcons.ellipsis,
+                  color: Theme.of(context).colorScheme.secondary),
             ),
             iconSize: 26.0,
           ),

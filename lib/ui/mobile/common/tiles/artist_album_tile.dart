@@ -4,9 +4,12 @@ import 'package:tearmusic/ui/mobile/common/cached_image.dart';
 import 'package:tearmusic/ui/mobile/common/views/album_view.dart';
 
 class ArtistAlbumTile extends StatelessWidget {
-  const ArtistAlbumTile(this.album, {Key? key, this.then, this.size = 130}) : super(key: key);
+  const ArtistAlbumTile(this.album, {Key? key, this.then, this.size = 130})
+      : super(key: key);
 
-  const ArtistAlbumTile.small(this.album, {Key? key, this.then, this.size = 110}) : super(key: key);
+  const ArtistAlbumTile.small(this.album,
+      {Key? key, this.then, this.size = 110})
+      : super(key: key);
 
   final MusicAlbum album;
   final void Function()? then;
@@ -19,7 +22,8 @@ class ArtistAlbumTile extends StatelessWidget {
       width: size,
       child: GestureDetector(
         onTap: () {
-          AlbumView.view(album, context: context).then((_) => then != null ? then!() : null);
+          AlbumView.view(album, context: context)
+              .then((_) => then != null ? then!() : null);
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -35,7 +39,8 @@ class ArtistAlbumTile extends StatelessWidget {
                     type: MaterialType.transparency,
                     child: InkWell(
                       onTap: () {
-                        AlbumView.view(album, context: context).then((_) => then != null ? then!() : null);
+                        AlbumView.view(album, context: context)
+                            .then((_) => then != null ? then!() : null);
                       },
                     ),
                   ),
@@ -48,7 +53,8 @@ class ArtistAlbumTile extends StatelessWidget {
                 album.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: size / 10 + 1),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, fontSize: size / 10 + 1),
               ),
             ),
             Text(
@@ -56,7 +62,10 @@ class ArtistAlbumTile extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
+                color: Theme.of(context)
+                    .colorScheme
+                    .secondary
+                    .withValues(alpha: .8),
                 fontSize: size / 10 + 1,
               ),
             ),

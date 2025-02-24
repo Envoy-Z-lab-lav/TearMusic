@@ -32,14 +32,18 @@ class UserProvider extends ChangeNotifier {
 
     try {
       final stLibrary = _store.get("library");
-      if (stLibrary != null) library = UserLibrary.decode(jsonDecode(stLibrary));
+      if (stLibrary != null) {
+        library = UserLibrary.decode(jsonDecode(stLibrary));
+      }
     } catch (e) {
       log("Library decode error: $e");
     }
 
     //try {
     final stPlayerInfo = _store.get("player_info");
-    if (stPlayerInfo != null) playerInfo = PlayerInfo.decode(jsonDecode(stPlayerInfo));
+    if (stPlayerInfo != null) {
+      playerInfo = PlayerInfo.decode(jsonDecode(stPlayerInfo));
+    }
     // } catch (e) {
     //   log("Player Info decode error: $e");
     // }
@@ -51,7 +55,7 @@ class UserProvider extends ChangeNotifier {
     _api.base.setAuth(accessToken, refreshToken);
     _musicInfoProvider.userId = _id ?? "";
 
-    if (accessToken != null) loggedIn = true;
+    loggedIn = true;
     notifyListeners();
 
     if (loggedIn) _getUser();
@@ -68,7 +72,8 @@ class UserProvider extends ChangeNotifier {
   String? _username;
   String? _avatar;
   UserLibrary? library;
-  PlayerInfo playerInfo = PlayerInfo(version: 0, queueSource: QueueSource(type: PlayerInfoSourceType.radio));
+  PlayerInfo playerInfo = PlayerInfo(
+      version: 0, queueSource: QueueSource(type: PlayerInfoSourceType.radio));
 
   Timer playerSyncTimer = Timer(const Duration(seconds: 0), () {});
 
@@ -140,7 +145,8 @@ class UserProvider extends ChangeNotifier {
     return library!;
   }
 
-  Future<void> putLibrary(Model model, LibraryType type, {String? fromId, String? fromType}) async {
+  Future<void> putLibrary(Model model, LibraryType type,
+      {String? fromId, String? fromType}) async {
     final id = model.id;
 
     switch (type) {
@@ -164,8 +170,16 @@ class UserProvider extends ChangeNotifier {
         library!.track_history = library!.track_history
             .where((item) => item.track_id != id)
             .toList()
-            .sublist((library!.track_history.length - 49).clamp(0, 49), library!.track_history.isEmpty ? 0 : library!.track_history.length - 1)
-          ..add(UserTrackHistory(date: DateTime.now().millisecondsSinceEpoch, track_id: id, from_id: fromId, from_type: fromType));
+            .sublist(
+                (library!.track_history.length - 49).clamp(0, 49),
+                library!.track_history.isEmpty
+                    ? 0
+                    : library!.track_history.length - 1)
+          ..add(UserTrackHistory(
+              date: DateTime.now().millisecondsSinceEpoch,
+              track_id: id,
+              from_id: fromId,
+              from_type: fromType));
         break;
     }
 
@@ -183,19 +197,23 @@ class UserProvider extends ChangeNotifier {
     switch (type) {
       case LibraryType.liked_tracks:
         if (!library!.liked_tracks.contains(id)) return;
-        library!.liked_tracks = library!.liked_tracks.where((l) => l != id).toList();
+        library!.liked_tracks =
+            library!.liked_tracks.where((l) => l != id).toList();
         break;
       case LibraryType.liked_artists:
         if (!library!.liked_artists.contains(id)) return;
-        library!.liked_artists = library!.liked_artists.where((l) => l != id).toList();
+        library!.liked_artists =
+            library!.liked_artists.where((l) => l != id).toList();
         break;
       case LibraryType.liked_albums:
         if (!library!.liked_albums.contains(id)) return;
-        library!.liked_albums = library!.liked_albums.where((l) => l != id).toList();
+        library!.liked_albums =
+            library!.liked_albums.where((l) => l != id).toList();
         break;
       case LibraryType.liked_playlists:
         if (!library!.liked_playlists.contains(id)) return;
-        library!.liked_playlists = library!.liked_playlists.where((l) => l != id).toList();
+        library!.liked_playlists =
+            library!.liked_playlists.where((l) => l != id).toList();
         break;
       case LibraryType.track_history:
         break;
@@ -211,7 +229,11 @@ class UserProvider extends ChangeNotifier {
   // QUEUE STUFF
 
   List<String> getAllTracks({includeHistory = true, includeCurrent = true}) {
-    return (playerInfo.normalQueue + playerInfo.primaryQueue + (includeHistory ? playerInfo.queueHistory.map((e) => e.id).toList() : []))
+    return (playerInfo.normalQueue +
+            playerInfo.primaryQueue +
+            (includeHistory
+                ? playerInfo.queueHistory.map((e) => e.id).toList()
+                : []))
         .toSet()
         .toList();
   }
@@ -249,7 +271,8 @@ class UserProvider extends ChangeNotifier {
     }
 
     if (playerInfo.currentMusic != null) {
-      final currentTrack = await _musicInfoProvider.batchTracks([playerInfo.currentMusic!.id]);
+      final currentTrack =
+          await _musicInfoProvider.batchTracks([playerInfo.currentMusic!.id]);
 
       if (currentTrack.isNotEmpty) {
         // log("[Player] Playing current music: ${currentTrack.first}");
@@ -317,7 +340,10 @@ class UserProvider extends ChangeNotifier {
     _store.put("player_info", jsonEncode(playerInfo.encode()));
   }
 
-  void postAdd(String id, int newVersion, {PlayerInfoPostType whereTo = PlayerInfoPostType.normal, bool fromPrimary = false, bool toStart = false}) {
+  void postAdd(String id, int newVersion,
+      {PlayerInfoPostType whereTo = PlayerInfoPostType.normal,
+      bool fromPrimary = false,
+      bool toStart = false}) {
     switch (whereTo) {
       case PlayerInfoPostType.primary:
         if (toStart) {
@@ -342,34 +368,54 @@ class UserProvider extends ChangeNotifier {
         break;
     }
 
-    final body = {"type": "add", "id": id, "where_to": whereTo.name, "from_primary": fromPrimary, "to_start": toStart};
+    final body = {
+      "type": "add",
+      "id": id,
+      "where_to": whereTo.name,
+      "from_primary": fromPrimary,
+      "to_start": toStart
+    };
     _stackPlayerOperation(body, newVersion);
   }
 
-  void postRemove(int index, int newVersion, {int? endIndex, PlayerInfoPostType removeFrom = PlayerInfoPostType.normal}) {
+  void postRemove(int index, int newVersion,
+      {int? endIndex,
+      PlayerInfoPostType removeFrom = PlayerInfoPostType.normal}) {
     switch (removeFrom) {
       case PlayerInfoPostType.primary:
         if (checkCorrectIndex(0, index, playerInfo.primaryQueue)) {
-          endIndex == null ? playerInfo.primaryQueue.removeAt(index) : playerInfo.primaryQueue.removeRange(index, endIndex + 1);
+          endIndex == null
+              ? playerInfo.primaryQueue.removeAt(index)
+              : playerInfo.primaryQueue.removeRange(index, endIndex + 1);
         }
         break;
       case PlayerInfoPostType.normal:
         if (checkCorrectIndex(0, index, playerInfo.normalQueue)) {
-          endIndex == null ? playerInfo.normalQueue.removeAt(index) : playerInfo.normalQueue.removeRange(index, endIndex + 1);
+          endIndex == null
+              ? playerInfo.normalQueue.removeAt(index)
+              : playerInfo.normalQueue.removeRange(index, endIndex + 1);
         }
         break;
       case PlayerInfoPostType.history:
-        if (checkCorrectIndex(0, index, playerInfo.queueHistory)) playerInfo.queueHistory.removeAt(index);
+        if (checkCorrectIndex(0, index, playerInfo.queueHistory)) {
+          playerInfo.queueHistory.removeAt(index);
+        }
         break;
       case PlayerInfoPostType.current:
         break;
     }
-    final body = {"type": "remove", "index": index, "remove_from": removeFrom.name, "end_index": endIndex};
+    final body = {
+      "type": "remove",
+      "index": index,
+      "remove_from": removeFrom.name,
+      "end_index": endIndex
+    };
     _stackPlayerOperation(body, newVersion);
   }
 
   void postReorder(int fromIndex, int toIndex, int newVersion,
-      {PlayerInfoReorderMoveType moveFrom = PlayerInfoReorderMoveType.normal, PlayerInfoReorderMoveType moveTo = PlayerInfoReorderMoveType.normal}) {
+      {PlayerInfoReorderMoveType moveFrom = PlayerInfoReorderMoveType.normal,
+      PlayerInfoReorderMoveType moveTo = PlayerInfoReorderMoveType.normal}) {
     String moveId;
 
     log("trying moveto ${moveFrom.name}($fromIndex) - ${moveTo.name}($toIndex)");
@@ -407,7 +453,13 @@ class UserProvider extends ChangeNotifier {
       playerInfo.normalQueue.insert(toIndex, moveId);
     }
 
-    final body = {"type": "reorder", "from_index": fromIndex, "to_index": toIndex, "move_from": moveFrom.name, "move_to": moveTo.name};
+    final body = {
+      "type": "reorder",
+      "from_index": fromIndex,
+      "to_index": toIndex,
+      "move_from": moveFrom.name,
+      "move_to": moveTo.name
+    };
     _stackPlayerOperation(body, newVersion);
   }
 
@@ -416,7 +468,8 @@ class UserProvider extends ChangeNotifier {
       "type": "overwrite",
       "new_normal_queue": playerInfo.normalQueue,
       "new_primary_queue": playerInfo.primaryQueue,
-      "new_queue_history": playerInfo.queueHistory.map((e) => e.encode()).toList(),
+      "new_queue_history":
+          playerInfo.queueHistory.map((e) => e.encode()).toList(),
     };
     _stackPlayerOperation(body, newVersion);
   }
@@ -450,8 +503,15 @@ class UserProvider extends ChangeNotifier {
     _stackPlayerOperation(body, newVersion);
   }
 
-  void postSource(String id, int? seed, PlayerInfoSourceType type, List<MusicTrack> tracks, bool playFirst, int newVersion) {
-    final body = {"type": "source", "id": id, "seed": seed, "source_type": type.name, "tracks": tracks.map((e) => e.id).toList()};
+  void postSource(String id, int? seed, PlayerInfoSourceType type,
+      List<MusicTrack> tracks, bool playFirst, int newVersion) {
+    final body = {
+      "type": "source",
+      "id": id,
+      "seed": seed,
+      "source_type": type.name,
+      "tracks": tracks.map((e) => e.id).toList()
+    };
 
     if (type == PlayerInfoSourceType.radio) {
     } else {
@@ -470,7 +530,8 @@ class UserProvider extends ChangeNotifier {
     _stackPlayerOperation(body, newVersion);
   }
 
-  Future<void> newQueue(PlayerInfoSourceType type, {String? id, bool wantSeed = true, playFirst = true}) async {
+  Future<void> newQueue(PlayerInfoSourceType type,
+      {String? id, bool wantSeed = true, playFirst = true}) async {
     int? seed;
     if (wantSeed) seed = randomBetween(10000, 99999);
 
@@ -492,7 +553,8 @@ class UserProvider extends ChangeNotifier {
 
     playerInfo.normalQueue = queueTracks.map((e) => e.id).toList();
 
-    postSource(id!, seed, type, queueTracks, playFirst, DateTime.now().millisecondsSinceEpoch);
+    postSource(id!, seed, type, queueTracks, playFirst,
+        DateTime.now().millisecondsSinceEpoch);
   }
 
   bool skipToPrev() {
@@ -507,9 +569,13 @@ class UserProvider extends ChangeNotifier {
 
       //final currentMusic = playerInfo.currentMusic!;
 
-      postRemove(queueHistory.length - 1, newVersion, removeFrom: PlayerInfoPostType.history);
+      postRemove(queueHistory.length - 1, newVersion,
+          removeFrom: PlayerInfoPostType.history);
       postAdd(playerInfo.currentMusic!.id, newVersion,
-          whereTo: playerInfo.currentMusic!.fromPrimary ? PlayerInfoPostType.primary : PlayerInfoPostType.normal, toStart: true);
+          whereTo: playerInfo.currentMusic!.fromPrimary
+              ? PlayerInfoPostType.primary
+              : PlayerInfoPostType.normal,
+          toStart: true);
       //postAdd(currentMusic.id, newVersion, whereTo: currentMusic.fromPrimary ? PlayerInfoPostType.primary : PlayerInfoPostType.normal, toStart: true);
 
       //postCurrentMusic(nextToPlay.id, DateTime.now().millisecondsSinceEpoch, fromPrimary: nextToPlay.fromPrimary);
@@ -538,7 +604,8 @@ class UserProvider extends ChangeNotifier {
     if (primaryQueue.isNotEmpty) {
       nextToPlay = primaryQueue.first;
 
-      postAdd(currentMusicId, newVersion, whereTo: PlayerInfoPostType.history, fromPrimary: fromPrimary);
+      postAdd(currentMusicId, newVersion,
+          whereTo: PlayerInfoPostType.history, fromPrimary: fromPrimary);
       postRemove(0, newVersion, removeFrom: PlayerInfoPostType.primary);
     } else if (normalQueue.isNotEmpty) {
       nextToPlay = normalQueue.first;
@@ -576,7 +643,9 @@ class UserProvider extends ChangeNotifier {
 }
 
 bool checkCorrectIndex(int type, int index, List list) {
-  return !(index < 0 || (type == 0 ? index >= list.length : index > list.length));
+  return !(index < 0 ||
+      (type == 0 ? index >= list.length : index > list.length));
 }
 
-int randomBetween(int min, int max) => min + math.Random().nextInt((max + 1) - min);
+int randomBetween(int min, int max) =>
+    min + math.Random().nextInt((max + 1) - min);

@@ -10,7 +10,8 @@ import 'package:tearmusic/models/music/images.dart';
 import 'package:http/http.dart' as http;
 
 class CachedImage extends StatelessWidget {
-  CachedImage(this.images, {Key? key, this.borderRadius = 4.0, this.setTheme = false, this.size})
+  CachedImage(this.images,
+      {Key? key, this.borderRadius = 4.0, this.setTheme = false, this.size})
       : _data = Completer<Uint8List>(),
         super(key: key);
 
@@ -41,7 +42,9 @@ class CachedImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return FutureBuilder<Uint8List?>(
-          future: getImage(size ?? (Size(constraints.maxWidth, constraints.maxHeight))).then((value) {
+          future: getImage(
+                  size ?? (Size(constraints.maxWidth, constraints.maxHeight)))
+              .then((value) {
             _data.complete(value);
             return value;
           }),
@@ -52,7 +55,8 @@ class CachedImage extends StatelessWidget {
                 width: constraints.maxWidth,
                 height: constraints.maxHeight,
                 child: PageTransitionSwitcher(
-                  transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                  transitionBuilder:
+                      (child, primaryAnimation, secondaryAnimation) {
                     return FadeThroughTransition(
                       fillColor: Colors.transparent,
                       animation: primaryAnimation,
@@ -76,11 +80,17 @@ class CachedImage extends StatelessWidget {
                           child: Card(
                             elevation: 0,
                             margin: EdgeInsets.zero,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius)),
-                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(borderRadius)),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
                             child: Icon(
                               CupertinoIcons.music_note,
-                              size: sqrt(constraints.maxWidth * constraints.maxHeight) / 2,
+                              size: sqrt(constraints.maxWidth *
+                                      constraints.maxHeight) /
+                                  2,
                               color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),

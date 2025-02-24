@@ -123,13 +123,22 @@ class MusicInfoProvider {
     final String? cache = _store.get(cacheKey);
     if (cache != null) {
       final json = jsonDecode(cache) as Map;
-      List<Map> tracks = (json['tracks'] as List).map((id) => jsonDecode(_store.get("tracks_$id"))).toList().cast();
+      List<Map> tracks = (json['tracks'] as List)
+          .map((id) => jsonDecode(_store.get("tracks_$id")))
+          .toList()
+          .cast();
       // log("[PQ] track cache found, fetched: ${tracks.map((e) => e['name'])}");
-      data = PlaylistDetails.decode({'tracks': tracks, 'followers': json['followers']});
+      data = PlaylistDetails.decode(
+          {'tracks': tracks, 'followers': json['followers']});
     } else {
       data = await _api.playlistTracks(playlistId);
       // log("[PQ] track cache not found, fetched: ${data.tracks.map((e) => e.name)}");
-      _store.put(cacheKey, jsonEncode({'tracks': Model.encodeIdList(data.tracks), 'followers': data.followers}));
+      _store.put(
+          cacheKey,
+          jsonEncode({
+            'tracks': Model.encodeIdList(data.tracks),
+            'followers': data.followers
+          }));
       for (final e in data.tracks) {
         _store.put("tracks_$e", jsonEncode(e.encode()));
       }
@@ -143,7 +152,10 @@ class MusicInfoProvider {
     final String? cache = _store.get(cacheKey);
     if (cache != null) {
       final json = jsonDecode(cache) as List;
-      data = MusicTrack.decodeList(json.map((id) => jsonDecode(_store.get("tracks_$id"))).toList().cast());
+      data = MusicTrack.decodeList(json
+          .map((id) => jsonDecode(_store.get("tracks_$id")))
+          .toList()
+          .cast());
     } else {
       data = await _api.albumTracks(albumId);
       _store.put(cacheKey, jsonEncode(Model.encodeIdList(data)));
@@ -160,7 +172,10 @@ class MusicInfoProvider {
     final String? cache = _store.get(cacheKey);
     if (cache != null) {
       final json = jsonDecode(cache) as List;
-      data = MusicAlbum.decodeList(json.map((id) => jsonDecode(_store.get("albums_$id"))).toList().cast());
+      data = MusicAlbum.decodeList(json
+          .map((id) => jsonDecode(_store.get("albums_$id")))
+          .toList()
+          .cast());
     } else {
       data = await _api.newReleases();
       _store.put(cacheKey, jsonEncode(Model.encodeIdList(data)));
@@ -177,7 +192,10 @@ class MusicInfoProvider {
     final String? cache = _store.get(cacheKey);
     if (cache != null) {
       final json = jsonDecode(cache) as List;
-      data = MusicAlbum.decodeList(json.map((id) => jsonDecode(_store.get("albums_$id"))).toList().cast());
+      data = MusicAlbum.decodeList(json
+          .map((id) => jsonDecode(_store.get("albums_$id")))
+          .toList()
+          .cast());
     } else {
       data = await _api.artistAlbums(artist);
       _store.put(cacheKey, jsonEncode(Model.encodeIdList(data)));
@@ -194,7 +212,10 @@ class MusicInfoProvider {
     final String? cache = _store.get(cacheKey);
     if (cache != null) {
       final json = jsonDecode(cache) as List;
-      data = MusicTrack.decodeList(json.map((id) => jsonDecode(_store.get("tracks_$id"))).toList().cast());
+      data = MusicTrack.decodeList(json
+          .map((id) => jsonDecode(_store.get("tracks_$id")))
+          .toList()
+          .cast());
     } else {
       data = await _api.artistTracks(artist);
       _store.put(cacheKey, jsonEncode(Model.encodeIdList(data)));
@@ -211,7 +232,10 @@ class MusicInfoProvider {
     final String? cache = _store.get(cacheKey);
     if (cache != null) {
       final json = jsonDecode(cache) as List;
-      data = MusicArtist.decodeList(json.map((id) => jsonDecode(_store.get("artists_$id"))).toList().cast());
+      data = MusicArtist.decodeList(json
+          .map((id) => jsonDecode(_store.get("artists_$id")))
+          .toList()
+          .cast());
     } else {
       data = await _api.artistRelated(artist);
       _store.put(cacheKey, jsonEncode(Model.encodeIdList(data)));
@@ -293,8 +317,10 @@ class MusicInfoProvider {
     return tracks;
   }
 
-  Future<BatchLibrary> libraryBatch(LibraryType type, {int limit = 10, int offset = 0}) async {
-    BatchLibrary data = await _api.libraryBatch(type, limit: limit, offset: offset);
+  Future<BatchLibrary> libraryBatch(LibraryType type,
+      {int limit = 10, int offset = 0}) async {
+    BatchLibrary data =
+        await _api.libraryBatch(type, limit: limit, offset: offset);
 
     if (type == LibraryType.liked_tracks) {
       for (final e in data.tracks) {

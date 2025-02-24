@@ -19,7 +19,8 @@ import 'package:tearmusic/ui/mobile/common/views/artist_view/artist_view.dart';
 import 'package:tearmusic/ui/mobile/common/views/manual_match_view.dart';
 
 class QueueTile extends StatelessWidget {
-  const QueueTile(this.track, this.itemIndex, this.isPrimary, {Key? key}) : super(key: key);
+  const QueueTile(this.track, this.itemIndex, this.isPrimary, {Key? key})
+      : super(key: key);
 
   final MusicTrack track;
   final int itemIndex;
@@ -43,19 +44,23 @@ class QueueTile extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.secondary.withOpacity(.2),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withValues(alpha: .2),
                       blurRadius: 6.0,
                     ),
                   ]),
                 ),
               ),
-              if (track.album != null && track.album!.images != null) CachedImage(track.album!.images!, size: const Size(64, 64)),
+              if (track.album != null && track.album!.images != null)
+                CachedImage(track.album!.images!, size: const Size(64, 64)),
               AnimatedOpacity(
                 duration: const Duration(milliseconds: 500),
                 opacity: track == value ? 1 : 0,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(.5),
+                    color: Colors.black.withValues(alpha: .5),
                     borderRadius: BorderRadius.circular(4.0),
                   ),
                   child: Center(
@@ -95,7 +100,8 @@ class QueueTile extends StatelessWidget {
                       child: Text(
                         "E",
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondaryContainer,
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
                           fontSize: 12.0,
                           height: -0.05,
                           fontWeight: FontWeight.bold,
@@ -119,10 +125,14 @@ class QueueTile extends StatelessWidget {
                   0,
                   endIndex: itemIndex,
                   DateTime.now().millisecondsSinceEpoch,
-                  removeFrom: isPrimary ? PlayerInfoPostType.primary : PlayerInfoPostType.normal);
+                  removeFrom: isPrimary
+                      ? PlayerInfoPostType.primary
+                      : PlayerInfoPostType.normal);
               FocusScope.of(context).requestFocus(FocusNode());
               if (track.album?.images != null) {
-                CachedImage(track.album!.images!).getImage(const Size(64, 64)).then((value) {
+                CachedImage(track.album!.images!)
+                    .getImage(const Size(64, 64))
+                    .then((value) {
                   if (value != null) {
                     final colors = generateColorPalette(value);
                     final theme = context.read<ThemeProvider>();
@@ -161,7 +171,8 @@ class QueueTile extends StatelessWidget {
                             icon: const Icon(CupertinoIcons.person),
                             child: const Text("View Artist"),
                             onPressed: () {
-                              ArtistView.view(track.artists.first, context: context);
+                              ArtistView.view(track.artists.first,
+                                  context: context);
                               Navigator.of(context, rootNavigator: true).pop();
                             },
                           ),
@@ -171,7 +182,8 @@ class QueueTile extends StatelessWidget {
                               child: const Text("View Album"),
                               onPressed: () {
                                 AlbumView.view(track.album!, context: context);
-                                Navigator.of(context, rootNavigator: true).pop();
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
                               },
                             ),
                           MenuButton(
@@ -179,9 +191,13 @@ class QueueTile extends StatelessWidget {
                             child: const Text("Purge Cache"),
                             onPressed: () {
                               Navigator.of(context, rootNavigator: true).pop();
-                              context.read<MusicInfoProvider>().purgeCache(track);
+                              context
+                                  .read<MusicInfoProvider>()
+                                  .purgeCache(track);
                               WidgetsBinding.instance.addPostFrameCallback((_) {
-                                context.read<NavigatorProvider>().showSnackBar(const SnackBar(content: Text("Track cache deleted")));
+                                context.read<NavigatorProvider>().showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Track cache deleted")));
                               });
                             },
                           ),

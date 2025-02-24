@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '860150371329',
     projectId: 'tear-music',
     storageBucket: 'tear-music.appspot.com',
-    iosClientId: '860150371329-esqpv6qt4g9lvgiv2l5pk8a0j5a14mav.apps.googleusercontent.com',
+    iosClientId:
+        '860150371329-esqpv6qt4g9lvgiv2l5pk8a0j5a14mav.apps.googleusercontent.com',
     iosBundleId: 'one.tear.tearmusic',
   );
 }

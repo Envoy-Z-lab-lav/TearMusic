@@ -45,7 +45,10 @@ class _WaveformSliderState extends State<WaveformSlider> {
   void generateWaveform() {
     final currentMusic = context.read<CurrentMusicProvider>();
 
-    progress = currentMusic.duration != null ? currentMusic.position.inMilliseconds / currentMusic.duration!.inMilliseconds : 0.0;
+    progress = currentMusic.duration != null
+        ? currentMusic.position.inMilliseconds /
+            currentMusic.duration!.inMilliseconds
+        : 0.0;
 
     waveform = [];
     cachedWaveform = [];
@@ -64,7 +67,8 @@ class _WaveformSliderState extends State<WaveformSlider> {
         chunks.add(sample.toDouble());
 
         if (chunks.length >= chunkLen) {
-          final double average = chunks.fold<double>(0, (a, b) => a + b) / chunks.length;
+          final double average =
+              chunks.fold<double>(0, (a, b) => a + b) / chunks.length;
           effects.add(normalizeInRange(average, min, max, 3.0, 40.0));
           chunks.clear();
         }
@@ -116,10 +120,14 @@ class _WaveformSliderState extends State<WaveformSlider> {
                   duration: const Duration(milliseconds: 150),
                   width: 3.0,
                   height: waveform.isEmpty
-                      ? normalizeInRange(math.sin(whereCenter - i * 0.7), -1.0, 1.0, 7.5, 32.0)
+                      ? normalizeInRange(
+                          math.sin(whereCenter - i * 0.7), -1.0, 1.0, 7.5, 32.0)
                       : waveform[i].toDouble() * (active ? 1.0 : 0.9),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(active ? 1.0 : 0.3),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: active ? 1.0 : 0.3),
                     borderRadius: BorderRadius.circular(45.0),
                   ),
                 ));
@@ -131,20 +139,30 @@ class _WaveformSliderState extends State<WaveformSlider> {
                 builder: (context, constraints) {
                   return GestureDetector(
                     onTapUp: (details) {
-                      progress = details.localPosition.dx / constraints.maxWidth;
+                      progress =
+                          details.localPosition.dx / constraints.maxWidth;
                       setProgress();
-                      currentMusic.seek(Duration(milliseconds: ((currentMusic.duration?.inMilliseconds ?? 0) * progress).round()));
+                      currentMusic.seek(Duration(
+                          milliseconds:
+                              ((currentMusic.duration?.inMilliseconds ?? 0) *
+                                      progress)
+                                  .round()));
                       sliding = false;
                     },
                     onHorizontalDragStart: (details) {
                       sliding = true;
                     },
                     onHorizontalDragUpdate: (details) {
-                      progress = details.localPosition.dx / constraints.maxWidth;
+                      progress =
+                          details.localPosition.dx / constraints.maxWidth;
                       setProgress();
                     },
                     onHorizontalDragEnd: (details) {
-                      currentMusic.seek(Duration(milliseconds: ((currentMusic.duration?.inMilliseconds ?? 0) * progress).round()));
+                      currentMusic.seek(Duration(
+                          milliseconds:
+                              ((currentMusic.duration?.inMilliseconds ?? 0) *
+                                      progress)
+                                  .round()));
                       sliding = false;
                     },
                     child: Container(
@@ -163,6 +181,7 @@ class _WaveformSliderState extends State<WaveformSlider> {
   }
 }
 
-double normalizeInRange(double val, double min1, double max1, double min2, double max2) {
+double normalizeInRange(
+    double val, double min1, double max1, double min2, double max2) {
   return min2 + ((val - min1) * (max2 - min2)) / (max1 - min1);
 }

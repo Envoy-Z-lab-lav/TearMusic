@@ -20,7 +20,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final username = context.select<UserProvider, String>((user) => user.username);
+    final username =
+        context.select<UserProvider, String>((user) => user.username);
 
     return Wallpaper(
       child: SafeArea(
@@ -31,7 +32,8 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 12.0).add(const EdgeInsets.symmetric(horizontal: 24.0)),
+                padding: const EdgeInsets.only(top: 12.0)
+                    .add(const EdgeInsets.symmetric(horizontal: 24.0)),
                 child: Row(
                   children: [
                     Expanded(
@@ -43,7 +45,9 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 20.0,
-                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                         ),
                       ),
                     ),
@@ -52,7 +56,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 24.0, top: 32.0, bottom: 8.0),
+                padding:
+                    const EdgeInsets.only(left: 24.0, top: 32.0, bottom: 8.0),
                 child: Text(
                   "New Releases".toUpperCase(),
                   style: TextStyle(
@@ -66,7 +71,8 @@ class _HomePageState extends State<HomePage> {
                   future: context.read<MusicInfoProvider>().newReleases(),
                   builder: (context, snapshot) {
                     return PageTransitionSwitcher(
-                      transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                      transitionBuilder:
+                          (child, primaryAnimation, secondaryAnimation) {
                         return SharedAxisTransition(
                           fillColor: Colors.transparent,
                           animation: primaryAnimation,

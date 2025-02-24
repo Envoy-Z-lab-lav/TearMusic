@@ -50,9 +50,14 @@ class UserApi {
     return UserLibrary.decode(jsonDecode(res.body));
   }
 
-  Future<void> putLibrary(String id, LibraryType type, {String? from, String? fromType}) async {
-    final res = await http.put(Uri.parse("${MusicApi.baseUrl}/user/music-library"),
-        headers: {"authorization": await base.getToken(), "content-type": "application/json"},
+  Future<void> putLibrary(String id, LibraryType type,
+      {String? from, String? fromType}) async {
+    final res = await http.put(
+        Uri.parse("${MusicApi.baseUrl}/user/music-library"),
+        headers: {
+          "authorization": await base.getToken(),
+          "content-type": "application/json"
+        },
         body: jsonEncode({
           "id": id,
           "type": type.name,
@@ -64,8 +69,13 @@ class UserApi {
   }
 
   Future<void> deleteLibrary(String id, LibraryType type) async {
-    final res = await http.delete(Uri.parse("${MusicApi.baseUrl}/user/music-library"),
-        headers: {"authorization": await base.getToken(), "content-type": "application/json"}, body: jsonEncode({"id": id, "type": type.name}));
+    final res = await http.delete(
+        Uri.parse("${MusicApi.baseUrl}/user/music-library"),
+        headers: {
+          "authorization": await base.getToken(),
+          "content-type": "application/json"
+        },
+        body: jsonEncode({"id": id, "type": type.name}));
 
     _reschk(res, "deleteLibrary");
   }
@@ -96,7 +106,8 @@ class UserApi {
 
   Future<bool> syncPlayerOperations(PlayerInfo playerInfo) async {
     final res = await http.post(
-      Uri.parse("${MusicApi.baseUrl}/user/player-info?version=${playerInfo.version}&operations_version=${playerInfo.operationsVersion}"),
+      Uri.parse(
+          "${MusicApi.baseUrl}/user/player-info?version=${playerInfo.version}&operations_version=${playerInfo.operationsVersion}"),
       headers: {"authorization": await base.getToken()},
       body: {"operations": jsonEncode(playerInfo.operations)},
     );

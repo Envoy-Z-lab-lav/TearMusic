@@ -26,7 +26,7 @@ class LyricsView extends StatefulWidget {
     return showCupertinoModalBottomSheet(
       context: context,
       useRootNavigator: true,
-      barrierColor: Colors.black.withOpacity(.3),
+      barrierColor: Colors.black.withValues(alpha: .3),
       builder: (context) => LyricsView(value),
     );
   }
@@ -35,7 +35,8 @@ class LyricsView extends StatefulWidget {
   State<LyricsView> createState() => _LyricsViewState();
 }
 
-class _LyricsViewState extends State<LyricsView> with SingleTickerProviderStateMixin {
+class _LyricsViewState extends State<LyricsView>
+    with SingleTickerProviderStateMixin {
   ScrollController? _controller;
   late double contentHeight;
   List<List<bool>> actives = [];
@@ -61,12 +62,16 @@ class _LyricsViewState extends State<LyricsView> with SingleTickerProviderStateM
         final span = TextSpan(
           text: line.segments.map((e) => e.text).join(),
           style: TextStyle(
-            fontFamily: ThemeProvider.defaultTheme.textTheme.bodyMedium!.fontFamily,
+            fontFamily:
+                ThemeProvider.defaultTheme.textTheme.bodyMedium!.fontFamily,
             fontWeight: FontWeight.bold,
             fontSize: 22.0,
           ),
         );
-        final painter = TextPainter(text: span, textDirection: TextDirection.ltr, textAlign: TextAlign.center);
+        final painter = TextPainter(
+            text: span,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.center);
         painter.layout(maxWidth: MediaQuery.of(context).size.width - 28.0 * 2);
         height += painter.height + 14.0 * 2;
       }
@@ -76,24 +81,30 @@ class _LyricsViewState extends State<LyricsView> with SingleTickerProviderStateM
         final span = TextSpan(
           text: line.text,
           style: TextStyle(
-            fontFamily: ThemeProvider.defaultTheme.textTheme.bodyMedium!.fontFamily,
+            fontFamily:
+                ThemeProvider.defaultTheme.textTheme.bodyMedium!.fontFamily,
             fontWeight: FontWeight.bold,
             fontSize: 22.0,
           ),
         );
-        final painter = TextPainter(text: span, textDirection: TextDirection.ltr, textAlign: TextAlign.center);
+        final painter = TextPainter(
+            text: span,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.center);
         painter.layout(maxWidth: MediaQuery.of(context).size.width - 28.0 * 2);
         height += painter.height + 14.0 * 2;
       }
     }
 
     if (_controller?.positions.isNotEmpty ?? true) {
-      height = (height + verticalPadding - contentHeight / 2).clamp(0, _controller?.position.maxScrollExtent ?? 0);
+      height = (height + verticalPadding - contentHeight / 2)
+          .clamp(0, _controller?.position.maxScrollExtent ?? 0);
       if (lastPos == null) {
         _controller?.jumpTo(height);
         autoScroll = true;
       } else if (height != lastPos && autoScroll) {
-        _controller?.animateTo(height, duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+        _controller?.animateTo(height,
+            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
         autoScroll = true;
       }
       lastPos = height;
@@ -104,7 +115,8 @@ class _LyricsViewState extends State<LyricsView> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     final currentMusic = context.read<CurrentMusicProvider>();
-    progressSub = currentMusic.positionStream.distinct().listen(progressListener);
+    progressSub =
+        currentMusic.positionStream.distinct().listen(progressListener);
 
     Wakelock.enable();
   }
@@ -134,7 +146,10 @@ class _LyricsViewState extends State<LyricsView> with SingleTickerProviderStateM
             if (!snapshot.hasData) {
               return Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: Theme.of(context).colorScheme.secondary.withOpacity(.2),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .secondary
+                      .withValues(alpha: .2),
                   size: 64.0,
                 ),
               );
@@ -161,12 +176,15 @@ class _LyricsViewState extends State<LyricsView> with SingleTickerProviderStateM
 
             return Stack(
               children: [
-                if (snapshot.data!.lyricsType != LyricsType.unavailable) const Wallpaper(particleOpacity: .07),
+                if (snapshot.data!.lyricsType != LyricsType.unavailable)
+                  const Wallpaper(particleOpacity: .07),
                 CustomScrollView(
                   controller: ModalScrollController.of(context),
                   slivers: [
                     SliverToBoxAdapter(
-                      child: SizedBox(height: verticalPadding + MediaQuery.of(context).padding.top),
+                      child: SizedBox(
+                          height: verticalPadding +
+                              MediaQuery.of(context).padding.top),
                     ),
                     if (snapshot.data!.lyricsType == LyricsType.unavailable)
                       const SliverToBoxAdapter(
@@ -191,7 +209,9 @@ class _LyricsViewState extends State<LyricsView> with SingleTickerProviderStateM
                         ),
                       ),
                     SliverToBoxAdapter(
-                      child: SizedBox(height: verticalPadding + MediaQuery.of(context).padding.bottom),
+                      child: SizedBox(
+                          height: verticalPadding +
+                              MediaQuery.of(context).padding.bottom),
                     ),
                   ],
                 ),
@@ -205,10 +225,18 @@ class _LyricsViewState extends State<LyricsView> with SingleTickerProviderStateM
                             end: Alignment.bottomCenter,
                             stops: const [0, .3, .6, 1],
                             colors: [
-                              Theme.of(context).scaffoldBackgroundColor.withOpacity(.7),
-                              Theme.of(context).scaffoldBackgroundColor.withOpacity(0),
-                              Theme.of(context).scaffoldBackgroundColor.withOpacity(0),
-                              Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
+                              Theme.of(context)
+                                  .scaffoldBackgroundColor
+                                  .withValues(alpha: .7),
+                              Theme.of(context)
+                                  .scaffoldBackgroundColor
+                                  .withValues(alpha: 0),
+                              Theme.of(context)
+                                  .scaffoldBackgroundColor
+                                  .withValues(alpha: 0),
+                              Theme.of(context)
+                                  .scaffoldBackgroundColor
+                                  .withValues(alpha: .8),
                             ],
                           ),
                         ),

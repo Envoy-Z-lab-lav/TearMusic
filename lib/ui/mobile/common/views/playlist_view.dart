@@ -27,8 +27,11 @@ class PlaylistView extends StatefulWidget {
 
   final MusicPlaylist playlist;
 
-  static Future<void> view(MusicPlaylist value, {required BuildContext context}) =>
-      context.read<NavigatorProvider>().pushModal(builder: (context) => PlaylistView(value), uri: value.uri);
+  static Future<void> view(MusicPlaylist value,
+          {required BuildContext context}) =>
+      context
+          .read<NavigatorProvider>()
+          .pushModal(builder: (context) => PlaylistView(value), uri: value.uri);
 
   @override
   State<PlaylistView> createState() => _PlaylistViewState();
@@ -77,7 +80,8 @@ class _PlaylistViewState extends State<PlaylistView> {
   @override
   Widget build(BuildContext context) {
     if (_scrollController == null) {
-      _scrollController = ModalScrollController.of(context) ?? ScrollController();
+      _scrollController =
+          ModalScrollController.of(context) ?? ScrollController();
       _scrollController!.addListener(() {
         if ((_scrollController?.offset ?? 0) > 250.0) {
           if (!showTitle) setState(() => showTitle = true);
@@ -97,7 +101,9 @@ class _PlaylistViewState extends State<PlaylistView> {
         final theme = snapshot.data!;
 
         return FutureBuilder<PlaylistDetails>(
-          future: context.read<MusicInfoProvider>().playlistTracks(widget.playlist.id),
+          future: context
+              .read<MusicInfoProvider>()
+              .playlistTracks(widget.playlist.id),
           builder: (context, snapshot) {
             return Theme(
               data: theme,
@@ -125,7 +131,9 @@ class _PlaylistViewState extends State<PlaylistView> {
                                 duration: const Duration(milliseconds: 200),
                                 child: Text(
                                   widget.playlist.name,
-                                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                                  style: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
                               centerTitle: true,
@@ -137,7 +145,9 @@ class _PlaylistViewState extends State<PlaylistView> {
                                       width: imageSize,
                                       height: imageSize,
                                       child: ClipSmoothRect(
-                                        radius: SmoothBorderRadius(cornerRadius: 32.0, cornerSmoothing: 1.0),
+                                        radius: SmoothBorderRadius(
+                                            cornerRadius: 32.0,
+                                            cornerSmoothing: 1.0),
                                         child: image,
                                       ),
                                     ),
@@ -148,13 +158,15 @@ class _PlaylistViewState extends State<PlaylistView> {
                           ),
                           SliverToBoxAdapter(
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 18.0, left: 24.0, right: 12.0),
+                              padding: const EdgeInsets.only(
+                                  top: 18.0, left: 24.0, right: 12.0),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           widget.playlist.name,
@@ -167,14 +179,16 @@ class _PlaylistViewState extends State<PlaylistView> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(bottom: 4.0),
+                                          padding: const EdgeInsets.only(
+                                              bottom: 4.0),
                                           child: Text(
                                             widget.playlist.owner,
                                             maxLines: 1,
                                             softWrap: false,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              color: theme.colorScheme.secondary.withOpacity(.7),
+                                              color: theme.colorScheme.secondary
+                                                  .withValues(alpha: .7),
                                               fontSize: 16.0,
                                             ),
                                           ),
@@ -183,18 +197,29 @@ class _PlaylistViewState extends State<PlaylistView> {
                                           Row(
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(right: 8.0),
+                                                padding: const EdgeInsets.only(
+                                                    right: 8.0),
                                                 child: Chip(
                                                   elevation: 1,
-                                                  backgroundColor: theme.colorScheme.primary.withOpacity(.2),
-                                                  labelPadding: const EdgeInsets.only(left: 2.0, right: 4.0),
-                                                  avatar: Icon(Icons.favorite, color: theme.colorScheme.primary, size: 18.0),
+                                                  backgroundColor: theme
+                                                      .colorScheme.primary
+                                                      .withValues(alpha: .2),
+                                                  labelPadding:
+                                                      const EdgeInsets.only(
+                                                          left: 2.0,
+                                                          right: 4.0),
+                                                  avatar: Icon(Icons.favorite,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                      size: 18.0),
                                                   label: Text(
                                                     "${NumberFormat.compact().format(snapshot.data!.followers)} likes",
                                                     style: TextStyle(
                                                       fontSize: 14.0,
-                                                      color: theme.colorScheme.primary,
-                                                      fontWeight: FontWeight.w600,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       wordSpacing: -1,
                                                       height: -0.05,
                                                     ),
@@ -203,14 +228,27 @@ class _PlaylistViewState extends State<PlaylistView> {
                                               ),
                                               Chip(
                                                 elevation: 1,
-                                                backgroundColor: theme.colorScheme.primary.withOpacity(.2),
-                                                labelPadding: const EdgeInsets.only(left: 2.0, right: 4.0),
-                                                avatar: Icon(Icons.schedule, color: theme.colorScheme.primary, size: 18.0),
+                                                backgroundColor: theme
+                                                    .colorScheme.primary
+                                                    .withValues(alpha: .2),
+                                                labelPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 2.0, right: 4.0),
+                                                avatar: Icon(Icons.schedule,
+                                                    color: theme
+                                                        .colorScheme.primary,
+                                                    size: 18.0),
                                                 label: Text(
-                                                  snapshot.data!.tracks.fold(Duration.zero, (Duration a, b) => b.duration + a).format(),
+                                                  snapshot.data!.tracks
+                                                      .fold(
+                                                          Duration.zero,
+                                                          (Duration a, b) =>
+                                                              b.duration + a)
+                                                      .format(),
                                                   style: TextStyle(
                                                     fontSize: 14.0,
-                                                    color: theme.colorScheme.primary,
+                                                    color: theme
+                                                        .colorScheme.primary,
                                                     fontWeight: FontWeight.w600,
                                                     wordSpacing: -1,
                                                     height: -0.05,
@@ -226,8 +264,11 @@ class _PlaylistViewState extends State<PlaylistView> {
                                     children: [
                                       Theme(
                                         data: theme.copyWith(
-                                          floatingActionButtonTheme: FloatingActionButtonThemeData(
-                                            sizeConstraints: BoxConstraints.tight(const Size.square(72.0)),
+                                          floatingActionButtonTheme:
+                                              FloatingActionButtonThemeData(
+                                            sizeConstraints:
+                                                BoxConstraints.tight(
+                                                    const Size.square(72.0)),
                                             iconSize: 46.0,
                                           ),
                                         ),
@@ -241,47 +282,78 @@ class _PlaylistViewState extends State<PlaylistView> {
                                         ),
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           IconButton(
                                             onPressed: () {},
                                             icon: Icon(
                                               CupertinoIcons.cloud_download,
-                                              color: theme.colorScheme.onSecondaryContainer,
+                                              color: theme.colorScheme
+                                                  .onSecondaryContainer,
                                               size: 26.0,
                                             ),
                                           ),
                                           FutureBuilder(
-                                              future: context.read<UserProvider>().getLibrary(),
+                                              future: context
+                                                  .read<UserProvider>()
+                                                  .getLibrary(),
                                               builder: (context, snapshot) {
                                                 return LikeButton(
                                                   bubblesColor: BubblesColor(
-                                                    dotPrimaryColor: theme.colorScheme.primary,
-                                                    dotSecondaryColor: theme.colorScheme.primaryContainer,
+                                                    dotPrimaryColor: theme
+                                                        .colorScheme.primary,
+                                                    dotSecondaryColor: theme
+                                                        .colorScheme
+                                                        .primaryContainer,
                                                   ),
                                                   circleColor: CircleColor(
-                                                    start: theme.colorScheme.tertiary,
-                                                    end: theme.colorScheme.tertiary,
+                                                    start: theme
+                                                        .colorScheme.tertiary,
+                                                    end: theme
+                                                        .colorScheme.tertiary,
                                                   ),
-                                                  isLiked: snapshot.hasData ? snapshot.data!.liked_playlists.contains(widget.playlist.id) : false,
+                                                  isLiked: snapshot.hasData
+                                                      ? snapshot
+                                                          .data!.liked_playlists
+                                                          .contains(widget
+                                                              .playlist.id)
+                                                      : false,
                                                   onTap: (isLiked) async {
                                                     if (!isLiked) {
-                                                      context.read<UserProvider>().putLibrary(widget.playlist, LibraryType.liked_playlists);
+                                                      context
+                                                          .read<UserProvider>()
+                                                          .putLibrary(
+                                                              widget.playlist,
+                                                              LibraryType
+                                                                  .liked_playlists);
                                                     } else {
-                                                      context.read<UserProvider>().deleteLibrary(widget.playlist, LibraryType.liked_playlists);
+                                                      context
+                                                          .read<UserProvider>()
+                                                          .deleteLibrary(
+                                                              widget.playlist,
+                                                              LibraryType
+                                                                  .liked_playlists);
                                                     }
 
                                                     return !isLiked;
                                                   },
                                                   likeBuilder: (value) => value
                                                       ? Icon(
-                                                          CupertinoIcons.heart_fill,
-                                                          color: Theme.of(context).colorScheme.primary,
+                                                          CupertinoIcons
+                                                              .heart_fill,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .primary,
                                                           size: 26.0,
                                                         )
                                                       : Icon(
                                                           CupertinoIcons.heart,
-                                                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .colorScheme
+                                                              .onSecondaryContainer,
                                                           size: 26.0,
                                                         ),
                                                 );
@@ -300,8 +372,10 @@ class _PlaylistViewState extends State<PlaylistView> {
                                 padding: const EdgeInsets.only(top: 32.0),
                                 child: Align(
                                   alignment: Alignment.topCenter,
-                                  child: LoadingAnimationWidget.staggeredDotsWave(
-                                    color: theme.colorScheme.secondary.withOpacity(.2),
+                                  child:
+                                      LoadingAnimationWidget.staggeredDotsWave(
+                                    color: theme.colorScheme.secondary
+                                        .withValues(alpha: .2),
                                     size: 64.0,
                                   ),
                                 ),
@@ -310,7 +384,9 @@ class _PlaylistViewState extends State<PlaylistView> {
                           if (snapshot.hasData)
                             SliverList(
                               delegate: SliverChildBuilderDelegate(
-                                (BuildContext context, int index) => PlaylistTrackTile(snapshot.data!.tracks[index]),
+                                (BuildContext context, int index) =>
+                                    PlaylistTrackTile(
+                                        snapshot.data!.tracks[index]),
                                 childCount: snapshot.data!.tracks.length,
                               ),
                             ),

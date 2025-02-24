@@ -23,5 +23,6 @@ class ManualMatch {
     );
   }
 
-  static List<ManualMatch> decodeList(List<Map> list) => list.map((e) => ManualMatch.decode(e)).toList().cast<ManualMatch>();
+  static List<ManualMatch> decodeList(List<Map> list) =>
+      list.map((e) => ManualMatch.decode(e)).toList().cast<ManualMatch>();
 }

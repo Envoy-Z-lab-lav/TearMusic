@@ -11,7 +11,7 @@ class SettingsAlertDialog {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.0),
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
           ),
           height: 250.0,
           width: 300.0,
@@ -20,7 +20,8 @@ class SettingsAlertDialog {
             children: [
               const Padding(
                 padding: EdgeInsets.only(top: 16.0),
-                child: Icon(Ionicons.warning, size: 45, color: Color.fromARGB(255, 242, 193, 88)),
+                child: Icon(Ionicons.warning,
+                    size: 45, color: Color.fromARGB(255, 242, 193, 88)),
               ),
               const Text(
                 "Are you sure?",
@@ -28,7 +29,10 @@ class SettingsAlertDialog {
               ),
               const Text(
                 "all yo stuff will be deleted.",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18.0, color: Color.fromARGB(255, 206, 206, 206)),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18.0,
+                    color: Color.fromARGB(255, 206, 206, 206)),
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -39,15 +43,23 @@ class SettingsAlertDialog {
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: TextButton.icon(
                           icon: const Icon(Ionicons.checkmark),
-                          label: const Text("Yes!", style: TextStyle(fontWeight: FontWeight.w800)),
+                          label: const Text("Yes!",
+                              style: TextStyle(fontWeight: FontWeight.w800)),
                           style: ButtonStyle(
-                            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0)),
-                            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 242, 88, 88).withOpacity(.25)),
-                            foregroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 242, 88, 88)),
+                            padding: WidgetStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 10.0)),
+                            backgroundColor: WidgetStateProperty.all(
+                                const Color.fromARGB(255, 242, 88, 88)
+                                    .withValues(alpha: .25)),
+                            foregroundColor: WidgetStateProperty.all(
+                                const Color.fromARGB(255, 242, 88, 88)),
                           ),
                           onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop('dialog');
-                            Provider.of<UserProvider>(context, listen: false).logoutCallback();
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
+                            Provider.of<UserProvider>(context, listen: false)
+                                .logoutCallback();
                           },
                         ),
                       ),
@@ -57,14 +69,23 @@ class SettingsAlertDialog {
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: TextButton.icon(
                           icon: const Icon(Ionicons.close),
-                          label: const Text("Nahh", style: TextStyle(fontWeight: FontWeight.w800)),
+                          label: const Text("Nahh",
+                              style: TextStyle(fontWeight: FontWeight.w800)),
                           style: ButtonStyle(
-                            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0)),
-                            backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary.withOpacity(.25)),
-                            foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                            padding: WidgetStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 10.0)),
+                            backgroundColor: WidgetStateProperty.all(
+                                Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withValues(alpha: .25)),
+                            foregroundColor: WidgetStateProperty.all(
+                                Theme.of(context).colorScheme.primary),
                           ),
                           onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop('dialog');
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
                           },
                         ),
                       ),

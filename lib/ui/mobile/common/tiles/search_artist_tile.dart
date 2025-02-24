@@ -25,7 +25,7 @@ class SearchArtistTile extends StatelessWidget {
               height: 42,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
               ),
               child: Center(
                 child: Icon(
@@ -38,7 +38,8 @@ class SearchArtistTile extends StatelessWidget {
       subtitle: artist.genres.isNotEmpty ? Text(artist.genres.first) : null,
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
-        ArtistView.view(artist, context: context).then((_) => context.read<ThemeProvider>().resetTheme());
+        ArtistView.view(artist, context: context)
+            .then((_) => context.read<ThemeProvider>().resetTheme());
       },
     );
   }

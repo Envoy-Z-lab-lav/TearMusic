@@ -15,7 +15,8 @@ class LatestRelease extends StatelessWidget {
       elevation: 1.0,
       child: InkWell(
         onTap: () {
-          AlbumView.view(album, context: context).then((_) => then != null ? then!() : null);
+          AlbumView.view(album, context: context)
+              .then((_) => then != null ? then!() : null);
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -30,7 +31,10 @@ class LatestRelease extends StatelessWidget {
                       Text(
                         "Latest Release".toUpperCase(),
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary.withOpacity(.65),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withValues(alpha: .65),
                           fontWeight: FontWeight.w600,
                           fontSize: 13.0,
                         ),
@@ -47,7 +51,9 @@ class LatestRelease extends StatelessWidget {
                       ),
                       Text(
                         "${album.releaseDate.year} • ${album.shortTitle}",
-                        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant),
                       ),
                     ],
                   ),

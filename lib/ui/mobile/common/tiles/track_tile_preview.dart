@@ -12,7 +12,10 @@ class TrackTilePreview extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12.0),
       child: Container(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(.5),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withValues(alpha: .5),
         child: TrackTile(
           track,
           onLongPressed: () {},
