@@ -44,6 +44,7 @@ dependencies:
   automatic_animated_list: ^1.1.0
   shimmer: ^3.0.0
   wakelock: ^0.6.2
+  win32: ^5.5.3
   async: ^2.9.0
   modal_bottom_sheet: ^3.0.0-pre
   just_audio: ^0.9.31
